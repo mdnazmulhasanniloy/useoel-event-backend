@@ -1,4 +1,4 @@
-import { Error, Query, Schema, model } from 'mongoose';
+import { Error, Query, Schema, Types, model } from 'mongoose';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 import { IUser, UserModel } from './user.interface';
@@ -48,15 +48,7 @@ const userSchema: Schema<IUser> = new Schema(
     passwordChangedAt: {
       type: Date,
     },
-    // signUpStyle: {
-    //   type: String,
-    //   enum: [
-    //     SIGN_UP_STYLE?.credentials,
-    //     SIGN_UP_STYLE.google,
-    //     SIGN_UP_STYLE.apple,
-    //   ],
-    //   default: SIGN_UP_STYLE.credentials,
-    // },
+
     isDeleted: {
       type: Boolean,
       default: false,
@@ -82,6 +74,11 @@ const userSchema: Schema<IUser> = new Schema(
         // return expireAt.setHours(expireAt.getHours() + 48);
         return expireAt.setMinutes(expireAt.getMinutes() + 1);
       },
+    },
+    team: {
+      type: Types.ObjectId,
+      ref: 'Team',
+      default: null,
     },
   },
   {
@@ -111,8 +108,6 @@ userSchema.post(
     next();
   },
 );
-
- 
 
 userSchema.statics.isUserExist = async function (email: string) {
   return await User.findOne({ email: email }).select('+password');
