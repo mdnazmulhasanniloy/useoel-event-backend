@@ -57,9 +57,7 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   await User.findById(req.params.id);
 
-  // if (req.file) {
-  //   req.body.image = storeFile('profile', req?.file?.filename);
-  // }
+   
   if (req?.file) {
     req.body.profile = await uploadToS3({
       file: req.file,

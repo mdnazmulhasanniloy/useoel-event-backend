@@ -1,4 +1,4 @@
-import { Model, Types } from 'mongoose';
+import { Model, ObjectId, Types } from 'mongoose';
 
 export interface IUser {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,11 +22,14 @@ export interface IUser {
     expiresAt: Date;
     status: boolean;
   };
+
+  //additional fields
+  team: ObjectId;
 }
 
 export interface UserModel extends Model<IUser> {
   isUserExist(email: string): Promise<IUser>;
-  IsUserExistId(id: string): Promise<IUser>; 
+  IsUserExistId(id: string): Promise<IUser>;
 
   isPasswordMatched(
     plainTextPassword: string,
