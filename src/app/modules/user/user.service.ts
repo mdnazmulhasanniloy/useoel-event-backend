@@ -20,8 +20,6 @@ const createUser = async (payload: IUser): Promise<IUser> => {
     );
   }
 
-   
-
   if (!payload.password) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Password is required');
   }
@@ -38,7 +36,7 @@ const getAllUser = async (query: Record<string, any>) => {
     .search(['name', 'email', 'phoneNumber', 'status'])
     .filter()
     .paginate()
-    .sort(); 
+    .sort();
   const data: any = await userModel.modelQuery;
   const meta = await userModel.countTotal();
   return {
@@ -56,7 +54,18 @@ const geUserById = async (id: string) => {
 };
 
 const updateUser = async (id: string, payload: Partial<IUser>) => {
-  const user = await User.findByIdAndUpdate(id, payload, { new: true });
+  const { videos, ...updateData } = payload;
+
+  if (videos && videos.length > 0) {
+    const result = await User.findByIdAndUpdate(
+      id,
+      {
+        $addToSet: { videos: videos }, // Ensures no duplicates in the videos array
+      },
+      { new: true }, // Returns the updated document
+    );
+  }
+  const user = await User.findByIdAndUpdate(id, updateData, { new: true });
   if (!user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'User updating failed');
   }
@@ -78,10 +87,46 @@ const deleteUser = async (id: string) => {
   return user;
 };
 
+// const addVideo = async (id: string, payload: any) => {
+//   const result = await User.findByIdAndUpdate(
+//     id,
+//     {
+//       $addToSet: { videos: payload?.video }, // Ensures no duplicates in the videos array
+//     },
+//     { new: true }, // Returns the updated document
+//   );
+
+//   if (!result) {
+//     throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to add video');
+//   }
+
+//   return result;
+// };
+
+const removeVideo = async (id: string, payload: any) => {
+  // Step 1: Remove the specific video from the videos array using $pull
+  const result = await User.findByIdAndUpdate(
+    id,
+    { $pull: { videos: payload?.video } }, // Removes the video matching the payload
+    { new: true }, // Returns the updated document
+  );
+
+  if (!result) {
+    throw new AppError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Failed to remove video',
+    );
+  }
+
+  return result; // Return the updated team
+};
+
 export const userService = {
   createUser,
   getAllUser,
   geUserById,
   updateUser,
   deleteUser,
+  removeVideo,
+  // addVideo,
 };

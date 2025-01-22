@@ -10,6 +10,7 @@ export interface IUser {
   phoneNumber: string;
   profile: string;
   role: string;
+  gender: string;
   password: string;
   address?: string;
   needsPasswordChange: boolean;
@@ -25,6 +26,14 @@ export interface IUser {
 
   //additional fields
   team: ObjectId;
+
+  available: boolean;
+  specializationAreas: string[];
+  skills: string[];
+  videos: string[];
+  experience: string;
+  preferenceCategory: string;
+  ageGroup: string;
 }
 
 export interface UserModel extends Model<IUser> {

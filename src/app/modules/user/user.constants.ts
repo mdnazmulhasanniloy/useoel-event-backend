@@ -13,7 +13,11 @@ export const SIGN_UP_STYLE = {
   google: 'google',
   apple: 'apple',
 };
-export const gender = ['Male', 'Female', 'Others'];
+export enum GENDER {
+  male = 'Male',
+  female = 'Female',
+  others = 'Others',
+}
 export const Role = [
   'admin',
   'super_admin',
