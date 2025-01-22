@@ -1,5 +1,4 @@
 import * as z from 'zod';
- 
 
 const TeamPlayerSchema = z.object({
   name: z.string({ required_error: 'Player name is required' }),
@@ -11,26 +10,46 @@ const TeamPlayerSchema = z.object({
     .url({ message: 'Invalid image URL format' }),
 });
 
-export const createTeamSchema = z.object({
+const createTeamSchema = z.object({
   body: z.object({
-    user: z
-      .string({ required_error: 'User ID is required' })
-      .regex(/^[a-f\d]{24}$/i, {
-        message: 'Invalid User ID format',
-      }), 
-      
-
     name: z.string({ required_error: 'Team name is required' }),
     city: z.string({ required_error: 'City is required' }),
     state: z.string({ required_error: 'State is required' }),
     country: z.string({ required_error: 'Country is required' }),
     teamCategory: z.string({ required_error: 'Team category is required' }),
-    ageGroup: z.string({ required_error: 'Age group is required' }), 
-    logo: z
-      .string({ required_error: 'Team logo URL is required' })
-      .url({ message: 'Invalid logo URL format' }),
-    player: z.array(TeamPlayerSchema).optional(),
-    isDeleted: z.boolean().optional(),
+    ageGroup: z.string({ required_error: 'Age group is required' }),
+    player: z.array(TeamPlayerSchema).optional(), 
+  }),
+});
+const updateTeamSchema = z.object({
+  body: z
+    .object({ 
+      name: z.string({ required_error: 'Team name is required' }),
+      city: z.string({ required_error: 'City is required' }),
+      state: z.string({ required_error: 'State is required' }),
+      country: z.string({ required_error: 'Country is required' }),
+      teamCategory: z.string({ required_error: 'Team category is required' }),
+      ageGroup: z.string({ required_error: 'Age group is required' }), 
+      player: z.array(TeamPlayerSchema).optional(), 
+    })
+    .deepPartial(),
+});
+
+const addPlayerSchema = z.object({
+  body: TeamPlayerSchema,
+});
+
+const removePlayerSchema = z.object({
+  body: z.object({
+    email: z
+      .string({ required_error: 'Email is required' })
+      .email({ message: 'please provide a valid email' }),
   }),
 });
 
+export const teamValidationSchema = {
+  createTeamSchema,
+  updateTeamSchema,
+  addPlayerSchema,
+  removePlayerSchema,
+};

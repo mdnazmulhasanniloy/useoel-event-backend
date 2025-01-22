@@ -2,11 +2,17 @@ import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { teamService } from './team.service';
 import sendResponse from '../../utils/sendResponse';
-import { storeFile } from '../../utils/fileHelper';
 import { uploadToS3 } from '../../utils/s3';
 
 const createTeam = catchAsync(async (req: Request, res: Response) => {
+  if (req.file) {
+    req.body.logo = await uploadToS3({
+      file: req.file,
+      fileName: `images/team/logo/${Math.floor(100000 + Math.random() * 900000)}`,
+    });
+  }
   req.body.user = req.user.userId;
+
   const result = await teamService.createTeam(req.body);
   sendResponse(res, {
     statusCode: 201,
@@ -36,6 +42,12 @@ const getTeamById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const updateTeam = catchAsync(async (req: Request, res: Response) => {
+  if (req.file) {
+    req.body.logo = await uploadToS3({
+      file: req.file,
+      fileName: `images/team/logo/${Math.floor(100000 + Math.random() * 900000)}`,
+    });
+  }
   const result = await teamService.updateTeam(req.params.id, req.body);
   sendResponse(res, {
     statusCode: 200,
