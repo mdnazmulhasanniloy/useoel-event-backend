@@ -2,7 +2,11 @@ import { Error, Query, Schema, Types, model } from 'mongoose';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 import { IUser, UserModel } from './user.interface';
-import { Role, SIGN_UP_STYLE, USER_ROLE } from './user.constants';
+import {
+  GENDER, 
+  Role, 
+  USER_ROLE,
+} from './user.constants';
 
 const userSchema: Schema<IUser> = new Schema(
   {
@@ -28,6 +32,11 @@ const userSchema: Schema<IUser> = new Schema(
       enum: ['active', 'blocked'],
       default: 'active',
     },
+    gender: {
+      type: String,
+      enum: GENDER,
+      default: null,
+    },
     profile: {
       type: String,
       default: null,
@@ -42,6 +51,7 @@ const userSchema: Schema<IUser> = new Schema(
       default: null,
     },
 
+    //auth section
     needsPasswordChange: {
       type: Boolean,
     },
@@ -75,11 +85,20 @@ const userSchema: Schema<IUser> = new Schema(
         return expireAt.setMinutes(expireAt.getMinutes() + 1);
       },
     },
+
+    //additional
     team: {
       type: Types.ObjectId,
       ref: 'Team',
       default: null,
     },
+    available: { type: Boolean, required: false },
+    specializationAreas: { type: [String], required: false }, 
+    skills: { type: [String], required: false },  
+    videos: { type: [String], required: false },  
+    experience: { type: String, required: false },
+    preferenceCategory: { type: String, required: false },
+    ageGroup: { type: String, required: false }, 
   },
   {
     timestamps: true,
