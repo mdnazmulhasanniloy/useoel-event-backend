@@ -41,7 +41,13 @@ export const createTeam = async (payload: any) => {
 };
 
 const getAllTeam = async (query: Record<string, any>) => {
-  const teamModel = new QueryBuilder(Team.find({ isDeleted: false }), query)
+  const teamModel = new QueryBuilder(
+    Team.find({ isDeleted: false }).populate({
+      path: 'user',
+      select: '-password -verification',
+    }),
+    query,
+  )
     .search(['name'])
     .filter()
     .paginate()
@@ -58,7 +64,7 @@ const getAllTeam = async (query: Record<string, any>) => {
 };
 
 const getTeamById = async (id: string) => {
-  const result = await Team.findById(id);
+  const result = await Team.findById(id).populate('user');
   if (!result || result?.isDeleted) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Team not found!');
   }
@@ -118,8 +124,8 @@ const removePlayerFromTeam = async (userId: string, playerEmail: string) => {
   // Step 3: Remove the player from the team using $pull
   const result = await Team.findByIdAndUpdate(
     team._id,
-    { $pull: { player: { email: playerEmail } } },  
-    { new: true },  
+    { $pull: { player: { email: playerEmail } } },
+    { new: true },
   );
 
   if (!result) {
@@ -159,5 +165,5 @@ export const teamService = {
   updateTeam,
   deleteTeam,
   addPlayerInTeam,
-  removePlayerFromTeam
+  removePlayerFromTeam,
 };
