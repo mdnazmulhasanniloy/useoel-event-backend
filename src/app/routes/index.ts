@@ -4,9 +4,14 @@ import { userRoutes } from '../modules/user/user.route';
 import { authRoutes } from '../modules/auth/auth.route';
 import { notificationRoutes } from '../modules/notification/notificaiton.route';
 import { teamRoutes } from '../modules/team/team.route';
+import uploadRouter from '../modules/uploads/route';
 
 const router = Router();
 const moduleRoutes = [
+  {
+    path: '/uploads',
+    route: uploadRouter,
+  },
   {
     path: '/users',
     route: userRoutes,
