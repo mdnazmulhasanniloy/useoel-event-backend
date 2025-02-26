@@ -7,7 +7,8 @@ import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 import globalErrorHandler from './app/middleware/globalErrorhandler';
 import notFound from './app/middleware/notfound';
-import router from './app/routes';
+import router from './app/routes'; 
+
 const app: Application = express();
 app.use(express.static('public'));
 app.use(express.json({ limit: '500mb' }));
@@ -24,9 +25,8 @@ app.use(
   }),
 );
 
-// Remove duplicate static middleware
-// app.use(app.static('public'));
-
+ 
+ 
 // application routes
 app.use('/api/v1', router);
 app.get('/', (req: Request, res: Response) => {

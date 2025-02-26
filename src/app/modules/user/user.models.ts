@@ -2,11 +2,7 @@ import { Error, Query, Schema, Types, model } from 'mongoose';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 import { IUser, UserModel } from './user.interface';
-import {
-  GENDER, 
-  Role, 
-  USER_ROLE,
-} from './user.constants';
+import { GENDER, Role, USER_ROLE } from './user.constants';
 
 const userSchema: Schema<IUser> = new Schema(
   {
@@ -75,6 +71,7 @@ const userSchema: Schema<IUser> = new Schema(
         type: Boolean,
         default: false,
       },
+     
     },
     expireAt: {
       type: Date,
@@ -93,12 +90,12 @@ const userSchema: Schema<IUser> = new Schema(
       default: null,
     },
     available: { type: Boolean, required: false },
-    specializationAreas: { type: [String], required: false }, 
-    skills: { type: [String], required: false },  
-    videos: { type: [String], required: false },  
+    specializationAreas: { type: [String], required: false },
+    skills: { type: [String], required: false },
+    videos: { type: [String], required: false },
     experience: { type: String, required: false },
     preferenceCategory: { type: String, required: false },
-    ageGroup: { type: String, required: false }, 
+    ageGroup: { type: String, required: false },
   },
   {
     timestamps: true,
