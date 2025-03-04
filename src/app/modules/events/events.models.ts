@@ -1,8 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { IEvents, IEventsModules, IRound } from './events.interface';
+import { IEvents, IEventsModules, IRounds } from './events.interface';
 import { category, EVENT_STATUS } from './events.constants';
 
-const RoundSchema = new Schema<IRound>({
+const RoundsSchema = new Schema<IRounds>({
   roundName: { type: String, required: true },
   startDate: { type: String, required: true },
   startTime: { type: String, required: true },
@@ -28,7 +28,7 @@ const eventsSchema = new Schema<IEvents>(
       endTime: { type: String, required: true },
       maxParticipants: { type: Number, required: true },
     },
-    rounds: { type: [RoundSchema], required: true },
+    rounds: { type: [RoundsSchema], default: [] },
     isDeleted: { type: Boolean, default: false },
   },
   {
@@ -38,3 +38,4 @@ const eventsSchema = new Schema<IEvents>(
 
 const Events = model<IEvents, IEventsModules>('Events', eventsSchema);
 export default Events;
+ 
