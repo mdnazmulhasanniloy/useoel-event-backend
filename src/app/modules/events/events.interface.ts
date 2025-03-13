@@ -1,11 +1,5 @@
-import { Model, ObjectId } from 'mongoose';
+import { Model } from 'mongoose';
 
-export interface IRounds {
-  roundName: string;
-  startDate: string;
-  startTime: string;
-  totalTime: string;
-}
 export interface IEvents {
   image: string;
   name: string;
@@ -15,12 +9,10 @@ export interface IEvents {
   status: string;
   Round: Number;
   roles: string;
-  registration: {
-    startTime: string;
-    endTime: string;
-    maxParticipants: number;
-  };
-  rounds:IRounds[];
+  registrationStartTime: string;
+  registrationEndTime: String;
+  maxParticipants: Number;
+  rounds: Number;
   isDeleted: boolean;
 }
 

@@ -1,13 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { IEvents, IEventsModules, IRounds } from './events.interface';
+import { IEvents, IEventsModules } from './events.interface';
 import { category, EVENT_STATUS } from './events.constants';
 
-const RoundsSchema = new Schema<IRounds>({
-  roundName: { type: String, required: true },
-  startDate: { type: String, required: true },
-  startTime: { type: String, required: true },
-  totalTime: { type: String, required: true },
-});
+ 
 
 const eventsSchema = new Schema<IEvents>(
   {
@@ -15,20 +10,17 @@ const eventsSchema = new Schema<IEvents>(
     name: { type: String, required: true },
     category: { type: String, enum: category, required: true },
     ageGroup: { type: String, required: true },
-    scoringStyle: { type: String, required: true },
-    Round: { type: Number, required: true },
+    scoringStyle: { type: String, required: true }, 
     roles: { type: String, required: true },
     status: {
       type: String,
       enum: ['continue', 'upcoming', 'cancelled', 'complete'],
       default: EVENT_STATUS.UPCOMING,
     },
-    registration: {
-      startTime: { type: String, required: true },
-      endTime: { type: String, required: true },
-      maxParticipants: { type: Number, required: true },
-    },
-    rounds: { type: [RoundsSchema], default: [] },
+    registrationStartTime: { type: String, required: true },
+    registrationEndTime: { type: String, required: true },
+    maxParticipants: { type: Number, required: true },
+    rounds: { type: Number, default: 1 },
     isDeleted: { type: Boolean, default: false },
   },
   {
@@ -38,4 +30,3 @@ const eventsSchema = new Schema<IEvents>(
 
 const Events = model<IEvents, IEventsModules>('Events', eventsSchema);
 export default Events;
- 

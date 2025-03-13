@@ -5,6 +5,8 @@ import { authRoutes } from '../modules/auth/auth.route';
 import { notificationRoutes } from '../modules/notification/notificaiton.route';
 import { teamRoutes } from '../modules/team/team.route';
 import uploadRouter from '../modules/uploads/route';
+import { eventsRoutes } from '../modules/events/events.route';
+import { eventRegisterRoutes } from '../modules/eventRegister/eventRegister.route';
 
 const router = Router();
 const moduleRoutes = [
@@ -31,6 +33,14 @@ const moduleRoutes = [
   {
     path: '/teams',
     route: teamRoutes,
+  },
+  {
+    path: '/events',
+    route: eventsRoutes,
+  },
+  {
+    path: '/events-register',
+    route: eventRegisterRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));
