@@ -13,7 +13,10 @@ const createRounds = async (payload: IRounds) => {
 };
 
 const getAllRounds = async (query: Record<string, any>) => {
-  const roundsModel = new QueryBuilder(Rounds.find(), query)
+  const roundsModel = new QueryBuilder(
+    Rounds.find().populate([{ path: 'game' }]),
+    query,
+  )
     .search(['roundName', 'gameType'])
     .filter()
     .paginate()
@@ -30,7 +33,7 @@ const getAllRounds = async (query: Record<string, any>) => {
 };
 
 const getRoundsById = async (id: string) => {
-  const result = await Rounds.findById(id);
+  const result = await Rounds.findById(id).populate([{ path: 'game' }]);
   if (!result) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Rounds not found!');
   }

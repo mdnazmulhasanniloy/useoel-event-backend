@@ -9,6 +9,7 @@ import { eventsRoutes } from '../modules/events/events.route';
 import { eventRegisterRoutes } from '../modules/eventRegister/eventRegister.route';
 import { robomissionRoutes } from '../modules/robomission/robomission.route';
 import { roundsRoutes } from '../modules/rounds/rounds.route';
+import { futureInnovatorsRoutes } from '../modules/futureInnovators/futureInnovators.route';
 
 const router = Router();
 const moduleRoutes = [
@@ -47,6 +48,10 @@ const moduleRoutes = [
   {
     path: '/robomission',
     route: robomissionRoutes,
+  },
+  {
+    path: '/future-innovators',
+    route: futureInnovatorsRoutes,
   },
   {
     path: '/rounds',

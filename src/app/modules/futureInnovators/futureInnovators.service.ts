@@ -1,17 +1,73 @@
 import httpStatus from 'http-status';
-import { IRobomission } from './robomission.interface';
-import Robomission from './robomission.models';
+import { IFutureInnovators } from './futureInnovators.interface';
+import FutureInnovators from './futureInnovators.models';
 import AppError from '../../error/AppError';
-import { gameType, IRounds } from '../rounds/rounds.interface';
-import Rounds from '../rounds/rounds.models';
-import Events from '../events/events.models';
 import EventRegister from '../eventRegister/eventRegister.models';
+import { gameType, IRounds } from '../rounds/rounds.interface';
+import Events from '../events/events.models';
+import Rounds from '../rounds/rounds.models';
 import pickQuery from '../../utils/pickQuery';
-import { startSession, Types } from 'mongoose';
 import { paginationHelper } from '../../helpers/pagination.helpers';
 import { CATEGORY_NAME } from '../events/events.constants';
+import { startSession, Types } from 'mongoose';
 
-const createRobomission = async (payload: IRobomission) => {
+// const createFutureInnovators = async (payload: IFutureInnovators) => {
+//   const registration = await EventRegister.findOne({
+//     event: payload?.event,
+//     coach: payload?.coach,
+//     status: 'accept',
+//   });
+
+//   if (!registration) {
+//     throw new AppError(
+//       httpStatus.FORBIDDEN,
+//       'You are not registered for this event',
+//     );
+//   }
+
+//   payload.teamName = registration?.teamName;
+
+//   const roundsArr: IRounds[] = [];
+//   const { rounds, ...gameData } = payload;
+
+//   // Find the event
+//   const event = await Events.findById(gameData?.event, null);
+//   if (!event) {
+//     throw new AppError(httpStatus.NOT_FOUND, 'Event not found');
+//   }
+
+//   if (event?.category !== CATEGORY_NAME.futureInnovators) {
+//     throw new AppError(
+//       httpStatus.FORBIDDEN,
+//       'This event is not a Future Innovators event',
+//     );
+//   }
+//   // Create FutureInnovators
+//   const result = await FutureInnovators.create(gameData);
+//   if (!result) {
+//     throw new AppError(
+//       httpStatus.BAD_REQUEST,
+//       'Failed to create Future Innovators',
+//     );
+//   }
+
+//   // Prepare rounds data
+//   rounds?.map(round =>
+//     roundsArr.push({
+//       ...round,
+//       gameType: gameType.FutureInnovators,
+//       //@ts-ignore
+//       game: result?._id,
+//     }),
+//   );
+
+//   // Create rounds
+//   await Rounds.create(roundsArr);
+
+//   return result;
+// };
+
+const createFutureInnovators = async (payload: IFutureInnovators) => {
   const session = await startSession();
   session.startTransaction();
 
@@ -39,19 +95,19 @@ const createRobomission = async (payload: IRobomission) => {
       throw new AppError(httpStatus.NOT_FOUND, 'Event not found');
     }
 
-    if (event.category !== CATEGORY_NAME.roboMission) {
+    if (event.category !== CATEGORY_NAME.futureInnovators) {
       throw new AppError(
         httpStatus.FORBIDDEN,
-        'This event is not a Robomission event',
+        'This event is not a Future Innovators event',
       );
     }
 
     // Create FutureInnovators
-    const result = await Robomission.create([gameData], { session });
+    const result = await FutureInnovators.create([gameData], { session });
     if (!result || result.length === 0) {
       throw new AppError(
         httpStatus.BAD_REQUEST,
-        'Failed to create Robomission',
+        'Failed to create Future Innovators',
       );
     }
 
@@ -61,7 +117,7 @@ const createRobomission = async (payload: IRobomission) => {
       ? await Promise.all(
           rounds.map(async round => ({
             ...round,
-            gameType: gameType.robomission,
+            gameType: gameType.FutureInnovators,
             //@ts-ignore
             game: result[0]._id,
           })),
@@ -86,7 +142,7 @@ const createRobomission = async (payload: IRobomission) => {
   }
 };
 
-const getAllRobomission = async (query: Record<string, any>) => {
+const getAllFutureInnovators = async (query: Record<string, any>) => {
   const { filters, pagination } = await pickQuery(query);
   const { searchTerm, latitude, longitude, ...filtersData } = filters;
 
@@ -172,14 +228,14 @@ const getAllRobomission = async (query: Record<string, any>) => {
         {
           $lookup: {
             from: 'rounds',
-            let: { robomissionId: '$_id' },
+            let: { futureInnovators: '$_id' },
             pipeline: [
               {
                 $match: {
                   $expr: {
                     $and: [
-                      { $eq: ['$game', '$$robomissionId'] },
-                      { $eq: ['$gameType', gameType.robomission] },
+                      { $eq: ['$game', '$$futureInnovators'] },
+                      { $eq: ['$gameType', gameType.FutureInnovators] },
                     ],
                   },
                 },
@@ -238,7 +294,7 @@ const getAllRobomission = async (query: Record<string, any>) => {
     },
   });
 
-  const [result] = await Robomission.aggregate(pipeline);
+  const [result] = await FutureInnovators.aggregate(pipeline);
 
   const total = result?.totalData?.[0]?.total || 0;
   const data = result?.paginatedData || [];
@@ -249,22 +305,22 @@ const getAllRobomission = async (query: Record<string, any>) => {
   };
 };
 
-const getRobomissionById = async (id: string) => {
-  const [result] = await Robomission.aggregate([
+const getFutureInnovatorsById = async (id: string) => {
+  const [result] = await FutureInnovators.aggregate([
     {
       $match: { _id: new Types.ObjectId(id), isDeleted: false },
     },
     {
       $lookup: {
         from: 'rounds',
-        let: { robomissionId: '$_id' },
+        let: { futureInnovators: '$_id' },
         pipeline: [
           {
             $match: {
               $expr: {
                 $and: [
-                  { $eq: ['$game', '$$robomissionId'] },
-                  { $eq: ['$gameType', gameType.robomission] },
+                  { $eq: ['$game', '$$futureInnovators'] },
+                  { $eq: ['$gameType', gameType.FutureInnovators] },
                 ],
               },
             },
@@ -321,41 +377,47 @@ const getRobomissionById = async (id: string) => {
     },
   ]);
   if (!result) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Robomission not found!');
+    throw new AppError(httpStatus.BAD_REQUEST, 'Future innovators not found!');
   }
 
   return result;
 };
 
-const updateRobomission = async (
+const updateFutureInnovators = async (
   id: string,
-  payload: Partial<IRobomission>,
+  payload: Partial<IFutureInnovators>,
 ) => {
-  const result = await Robomission.findByIdAndUpdate(id, payload, {
+  const result = await FutureInnovators.findByIdAndUpdate(id, payload, {
     new: true,
   });
   if (!result || result.isDeleted) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to update Robomission');
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Failed to update FutureInnovators',
+    );
   }
   return result;
 };
 
-const deleteRobomission = async (id: string) => {
-  const result = await Robomission.findByIdAndUpdate(
+const deleteFutureInnovators = async (id: string) => {
+  const result = await FutureInnovators.findByIdAndUpdate(
     id,
     { isDeleted: true },
     { new: true },
   );
   if (!result) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete robomission');
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Failed to delete futureInnovators',
+    );
   }
   return result;
 };
 
-export const robomissionService = {
-  createRobomission,
-  getAllRobomission,
-  getRobomissionById,
-  updateRobomission,
-  deleteRobomission,
+export const futureInnovatorsService = {
+  createFutureInnovators,
+  getAllFutureInnovators,
+  getFutureInnovatorsById,
+  updateFutureInnovators,
+  deleteFutureInnovators,
 };
