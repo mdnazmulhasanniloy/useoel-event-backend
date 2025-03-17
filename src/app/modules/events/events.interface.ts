@@ -12,6 +12,7 @@ export interface IEvents {
   registrationStartTime: string;
   registrationEndTime: String;
   maxParticipants: Number;
+  remainingParticipants: Number;
   rounds: Number;
   isDeleted: boolean;
 }

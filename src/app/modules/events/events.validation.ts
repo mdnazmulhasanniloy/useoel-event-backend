@@ -57,30 +57,30 @@ const createEventSchema = z.object({
 });
 
 const updateEventSchema = z.object({
-  file: z
-    .object({
-      fieldname: z.string().min(1),
-      originalname: z
-        .string()
-        .refine(value => /\.(jpg|jpeg|png|webp)$/i.test(value), {
-          message:
-            'Invalid image format. Supported formats: .jpg, .jpeg, .png, .webp',
-        }),
-      encoding: z.string().min(1),
-      mimetype: z
-        .string()
-        .refine(value => /^image\/(jpeg|png|webp)$/i.test(value), {
-          message:
-            'Invalid mimetype. Supported formats: image/jpeg, image/png, image/webp',
-        }),
-      buffer: z.instanceof(Buffer).refine(value => value.length > 0, {
-        message: 'File buffer should not be empty',
-      }),
-      size: z.number().max(10 * 1024 * 1024, {
-        message: 'File size should not exceed 10MB',
-      }), // You can change 10MB to the size you need
-    })
-    .deepPartial(),
+  // file: z
+  //   .object({
+  //     fieldname: z.string().min(1),
+  //     originalname: z
+  //       .string()
+  //       .refine(value => /\.(jpg|jpeg|png|webp)$/i.test(value), {
+  //         message:
+  //           'Invalid image format. Supported formats: .jpg, .jpeg, .png, .webp',
+  //       }),
+  //     encoding: z.string().min(1),
+  //     mimetype: z
+  //       .string()
+  //       .refine(value => /^image\/(jpeg|png|webp)$/i.test(value), {
+  //         message:
+  //           'Invalid mimetype. Supported formats: image/jpeg, image/png, image/webp',
+  //       }),
+  //     buffer: z.instanceof(Buffer).refine(value => value.length > 0, {
+  //       message: 'File buffer should not be empty',
+  //     }),
+  //     size: z.number().max(10 * 1024 * 1024, {
+  //       message: 'File size should not exceed 10MB',
+  //     }), // You can change 10MB to the size you need
+  //   })
+  //   .deepPartial(),
   body: z
     .object({
       name: z.string().min(1, { message: 'Event name is required.' }),

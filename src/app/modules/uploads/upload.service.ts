@@ -46,7 +46,7 @@ const single = async (file: any) => {
   }
   const result = await uploadToS3({
     file,
-    fileName: ` images/${Math.floor(100000 + Math.random() * 900000)}`,
+    fileName: `images/${Math.floor(100000 + Math.random() * 900000)}`,
   });
 
   return result;

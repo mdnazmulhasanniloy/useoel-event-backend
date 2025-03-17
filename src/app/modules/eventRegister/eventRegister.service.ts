@@ -32,6 +32,18 @@ const createEventRegister = async (payload: IEventRegister, userId: string) => {
       'Registration period has ended.',
     );
   }
+
+  if (
+    event?.category === CATEGORY_NAME?.robosporst ||
+    event?.category === CATEGORY_NAME.sumboBots
+  ) {
+    //@ts-ignore
+    payload.player = userId;
+  } else {
+    //@ts-ignore
+    payload.coach = userId;
+  }
+
   if (
     event?.category === CATEGORY_NAME?.robosporst ||
     CATEGORY_NAME.sumboBots

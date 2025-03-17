@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { eventRegisterService } from './eventRegister.service';
-import sendResponse from '../../utils/sendResponse'; 
+import sendResponse from '../../utils/sendResponse';
+import { User } from '../user/user.models';
 
 const createEventRegister = catchAsync(async (req: Request, res: Response) => {
   const result = await eventRegisterService.createEventRegister(
@@ -17,6 +18,16 @@ const createEventRegister = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllEventRegister = catchAsync(async (req: Request, res: Response) => {
+  const result = await eventRegisterService.getAllEventRegister(req.query);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'All eventRegister fetched successfully',
+    data: result,
+  });
+});
+const getMyEventRegister = catchAsync(async (req: Request, res: Response) => {
+  const user = await User.IsUserExistId(req.user.userId);
   const result = await eventRegisterService.getAllEventRegister(req.query);
   sendResponse(res, {
     statusCode: 200,
@@ -91,4 +102,5 @@ export const eventRegisterController = {
   deleteEventRegister,
   acceptEventRegister,
   rejectEventRegister,
+  getMyEventRegister,
 };
