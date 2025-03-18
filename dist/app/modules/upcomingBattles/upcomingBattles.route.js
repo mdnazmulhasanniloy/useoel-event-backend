@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.upcomingBattlesRoutes = void 0;
+const express_1 = require("express");
+const upcomingBattles_controller_1 = require("./upcomingBattles.controller");
+const router = (0, express_1.Router)();
+router.post('/', upcomingBattles_controller_1.upcomingBattlesController.createUpcomingBattles);
+router.patch('/:id', upcomingBattles_controller_1.upcomingBattlesController.updateUpcomingBattles);
+router.delete('/:id', upcomingBattles_controller_1.upcomingBattlesController.deleteUpcomingBattles);
+router.get('/:id', upcomingBattles_controller_1.upcomingBattlesController.getUpcomingBattlesById);
+router.get('/', upcomingBattles_controller_1.upcomingBattlesController.getAllUpcomingBattles);
+exports.upcomingBattlesRoutes = router;

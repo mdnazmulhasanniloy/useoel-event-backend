@@ -3,6 +3,7 @@ import { Model, ObjectId } from 'mongoose';
 export enum gameType {
   robomission = 'Robomission',
   FutureInnovators = 'FutureInnovators',
+  FutureEngineers = 'FutureEngineers',
 }
 
 export interface IRounds {
