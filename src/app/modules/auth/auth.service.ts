@@ -20,7 +20,9 @@ import fs from 'fs';
 
 // Login
 const login = async (payload: TLogin) => {
+  console.log("🚀 ~ login ~ payload:", payload)
   const user: IUser | null = await User.isUserExist(payload?.email);
+  console.log("🚀 ~ login ~ user:", user)
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }

@@ -5,6 +5,11 @@ import { authRoutes } from '../modules/auth/auth.route';
 import { notificationRoutes } from '../modules/notification/notificaiton.route';
 import { teamRoutes } from '../modules/team/team.route';
 import uploadRouter from '../modules/uploads/route';
+import { eventsRoutes } from '../modules/events/events.route';
+import { eventRegisterRoutes } from '../modules/eventRegister/eventRegister.route';
+import { robomissionRoutes } from '../modules/robomission/robomission.route';
+import { roundsRoutes } from '../modules/rounds/rounds.route';
+import { futureInnovatorsRoutes } from '../modules/futureInnovators/futureInnovators.route';
 
 const router = Router();
 const moduleRoutes = [
@@ -31,6 +36,26 @@ const moduleRoutes = [
   {
     path: '/teams',
     route: teamRoutes,
+  },
+  {
+    path: '/events',
+    route: eventsRoutes,
+  },
+  {
+    path: '/events-register',
+    route: eventRegisterRoutes,
+  },
+  {
+    path: '/robomission',
+    route: robomissionRoutes,
+  },
+  {
+    path: '/future-innovators',
+    route: futureInnovatorsRoutes,
+  },
+  {
+    path: '/rounds',
+    route: roundsRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

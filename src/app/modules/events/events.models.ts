@@ -1,13 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { IEvents, IEventsModules, IRound } from './events.interface';
+import { IEvents, IEventsModules } from './events.interface';
 import { category, EVENT_STATUS } from './events.constants';
 
-const RoundSchema = new Schema<IRound>({
-  roundName: { type: String, required: true },
-  startDate: { type: String, required: true },
-  startTime: { type: String, required: true },
-  totalTime: { type: String, required: true },
-});
+ 
 
 const eventsSchema = new Schema<IEvents>(
   {
@@ -16,25 +11,30 @@ const eventsSchema = new Schema<IEvents>(
     category: { type: String, enum: category, required: true },
     ageGroup: { type: String, required: true },
     scoringStyle: { type: String, required: true },
-    Round: { type: Number, required: true },
     roles: { type: String, required: true },
     status: {
       type: String,
       enum: ['continue', 'upcoming', 'cancelled', 'complete'],
       default: EVENT_STATUS.UPCOMING,
     },
-    registration: {
-      startTime: { type: String, required: true },
-      endTime: { type: String, required: true },
-      maxParticipants: { type: Number, required: true },
-    },
-    rounds: { type: [RoundSchema], required: true },
+    registrationStartTime: { type: String, required: true },
+    registrationEndTime: { type: String, required: true },
+    maxParticipants: { type: Number, required: true },
+    remainingParticipants: { type: Number },
+    rounds: { type: Number, default: 1 },
     isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,
   },
 );
+
+eventsSchema.pre('save', function (next) {
+  if (this.isNew && this.remainingParticipants === undefined) {
+    this.remainingParticipants = this.maxParticipants;
+  }
+  next();
+});
 
 const Events = model<IEvents, IEventsModules>('Events', eventsSchema);
 export default Events;

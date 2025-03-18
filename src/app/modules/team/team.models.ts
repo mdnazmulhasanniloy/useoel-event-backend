@@ -9,7 +9,7 @@ const TeamPlayerSchema = new Schema<ITeamPlayer>({
 
 const teamSchema = new Schema<ITeam>(
   {
-    user: { type: Types.ObjectId, ref: 'User', required: true }, // Automatically generated
+    user: { type: Types.ObjectId, ref: 'User', required: true },  
     name: { type: String, required: true },
     city: { type: String, required: true },
     state: { type: String, required: true },
