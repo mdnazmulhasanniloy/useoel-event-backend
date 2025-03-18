@@ -78,11 +78,11 @@ const createRobomission = async (payload: IRobomission) => {
     session.endSession();
 
     return result[0];
-  } catch (error) {
+  } catch (error: any) {
     console.log('🚀 ~ error:', error);
     await session.abortTransaction();
     session.endSession();
-    throw error;
+    throw new AppError(httpStatus.BAD_REQUEST, error.message);
   }
 };
 
@@ -91,7 +91,7 @@ const getAllRobomission = async (query: Record<string, any>) => {
   const { searchTerm, latitude, longitude, ...filtersData } = filters;
 
   if (filtersData?.author) {
-    filtersData['event'] = new Types.ObjectId(filtersData?.coach);
+    filtersData['event'] = new Types.ObjectId(filtersData?.event);
   }
 
   if (filtersData?.facility) {

@@ -8,7 +8,7 @@ export enum EVENT_STATUS {
 export enum CATEGORY_NAME {
   roboMission = 'RoboMission',
   futureInnovators = 'FutureInnovators',
-  futureEngineers = 'Future Engineers',
+  futureEngineers = 'FutureEngineers',
   robosporst = 'Robosporst',
   sumboBots = 'SumboBots',
 }
@@ -16,7 +16,7 @@ export enum CATEGORY_NAME {
 export const category: string[] = [
   'RoboMission',
   'FutureInnovators',
-  'Future Engineers',
+  'FutureEngineers',
   'Robosporst',
   'SumboBots',
 ];

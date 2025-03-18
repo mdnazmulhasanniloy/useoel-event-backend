@@ -13,7 +13,7 @@
     "prettier:fix": "prettier --write .",
     "lint-prettier": "npm run lint:check && npm run prettier:check",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:prod": "node ./dist/server.js"
+    "start:prod": "nodemon ./dist/server.js"
   },
   "author": "MD Nazmul Hasan",
   "license": "ISC",
@@ -66,6 +66,7 @@
     "@types/node-schedule": "^2.1.7",
     "@types/uuid": "^10.0.0",
     "node-schedule": "^2.1.1",
+    "nodemon": "^3.1.9",
     "socket.io": "^4.7.5",
     "stripe": "^16.6.0",
     "uuid": "^10.0.0"
