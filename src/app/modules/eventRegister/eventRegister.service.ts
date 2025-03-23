@@ -7,6 +7,7 @@ import Events from '../events/events.models';
 import { CATEGORY_NAME } from '../events/events.constants';
 import moment from 'moment';
 import { IEvents } from '../events/events.interface';
+import { startSession } from 'mongoose';
 
 const createEventRegister = async (payload: IEventRegister, userId: string) => {
   const event: IEvents | null = await Events.findById(payload.event);
@@ -129,6 +130,45 @@ const updateEventRegister = async (
   return result;
 };
 
+const acceptEventRegister = async (
+  id: string,
+  payload: Partial<IEventRegister>,
+) => {
+  const session = await startSession();
+  session.startTransaction();
+
+  try {
+    const result = await EventRegister.findByIdAndUpdate(id, payload, {
+      new: true,
+      session,
+    });
+
+    if (!result) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        'Failed to update EventRegister',
+      );
+    }
+
+    await Events.findByIdAndUpdate(
+      result.event,
+      {
+        $addToSet: { registered: result.player || result.coach },
+      },
+      { session },
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+    return result;
+  } catch (error: any) {
+    console.log('🚀 ~ error:', error);
+    await session.abortTransaction();
+    session.endSession();
+    throw new AppError(httpStatus?.BAD_REQUEST, error?.message);
+  }
+};
+
 const deleteEventRegister = async (id: string) => {
   const result = await EventRegister.findByIdAndDelete(id);
   if (!result) {
@@ -146,4 +186,5 @@ export const eventRegisterService = {
   getEventRegisterById,
   updateEventRegister,
   deleteEventRegister,
+  acceptEventRegister,
 };

@@ -16,10 +16,13 @@ router.post(
 router.patch(
   '/:id',
   auth(USER_ROLE?.admin, USER_ROLE.sub_admin, USER_ROLE.super_admin),
-  upload.fields([{ name: 'videos', maxCount: 1 }]),
   assignGameController.updateAssignGame,
 );
-router.delete('/:id', assignGameController.deleteAssignGame);
+router.delete(
+  '/:id',
+  auth(USER_ROLE?.admin, USER_ROLE.sub_admin, USER_ROLE.super_admin),
+  assignGameController.deleteAssignGame,
+);
 router.get('/:id', assignGameController.getAssignGameById);
 router.get('/', assignGameController.getAllAssignGame);
 
