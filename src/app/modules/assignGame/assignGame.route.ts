@@ -1,13 +1,9 @@
 import { Router } from 'express';
 import { assignGameController } from './assignGame.controller';
 import auth from '../../middleware/auth';
-import { USER_ROLE } from '../user/user.constants';
-import multer, { memoryStorage } from 'multer';
+import { USER_ROLE } from '../user/user.constants'; 
 
-const router = Router();
-const storage = memoryStorage();
-const upload = multer({ storage });
-
+const router = Router(); 
 router.post(
   '/',
   auth(USER_ROLE?.admin, USER_ROLE.sub_admin, USER_ROLE.super_admin),

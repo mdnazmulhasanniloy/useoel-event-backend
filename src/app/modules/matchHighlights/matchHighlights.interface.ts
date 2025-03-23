@@ -1,7 +1,6 @@
 import { Model, ObjectId } from 'mongoose';
 
 export interface IMatchHighlights {
-  video: string;
   videoUrl: string;
   title: string;
   teamA: ObjectId;
