@@ -29,6 +29,8 @@ router.delete(
   auth(USER_ROLE?.coach),
   joiningRequestsController.deleteJoiningRequests,
 );
+
+ 
 router.get(
   '/request',
   auth(USER_ROLE.player),

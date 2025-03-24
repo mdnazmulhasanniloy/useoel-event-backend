@@ -11,6 +11,10 @@ import { robomissionRoutes } from '../modules/robomission/robomission.route';
 import { roundsRoutes } from '../modules/rounds/rounds.route';
 import { futureInnovatorsRoutes } from '../modules/futureInnovators/futureInnovators.route';
 import { futureEngineersRoutes } from '../modules/futureEngineers/futureEngineers.route';
+import { packagesRoutes } from '../modules/packages/packages.route';
+import { joiningRequestsRoutes } from '../modules/joiningRequests/joiningRequests.route';
+import { matchHighlightsRoutes } from '../modules/matchHighlights/matchHighlights.route';
+import { assignGameRoutes } from '../modules/assignGame/assignGame.route';
 
 const router = Router();
 const moduleRoutes = [
@@ -39,6 +43,10 @@ const moduleRoutes = [
     route: teamRoutes,
   },
   {
+    path: '/joining-request',
+    route: joiningRequestsRoutes,
+  },
+  {
     path: '/events',
     route: eventsRoutes,
   },
@@ -59,8 +67,20 @@ const moduleRoutes = [
     route: futureEngineersRoutes,
   },
   {
+    path: '/assign-game',
+    route: assignGameRoutes,
+  },
+  {
     path: '/rounds',
     route: roundsRoutes,
+  },
+  {
+    path: '/packages',
+    route: packagesRoutes,
+  },
+  {
+    path: '/match-highlight',
+    route: matchHighlightsRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

@@ -18,24 +18,7 @@ const PackageSchema = new Schema<IPackage>(
   {
     timestamps: true,
   },
-);
-
-PackageSchema.pre('find', function (next) {
-  //@ts-ignore
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-PackageSchema.pre('findOne', function (next) {
-  //@ts-ignore
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-PackageSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
-  next();
-});
+); 
 
 const Package = model<IPackage, IPackageModel>('Package', PackageSchema);
 

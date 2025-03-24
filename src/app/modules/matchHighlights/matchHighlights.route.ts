@@ -6,20 +6,18 @@ import { USER_ROLE } from '../user/user.constants';
 import parseData from '../../middleware/parseData';
 
 const router = Router();
-const storage = memoryStorage();
-const upload = multer({ storage });
+// const storage = memoryStorage();
+// const upload = multer({ storage });
 
 router.post(
   '/',
-  auth(USER_ROLE.admin),
-  upload.single('video'),
+  auth(USER_ROLE.admin), 
   parseData(),
   matchHighlightsController.createMatchHighlights,
 );
 router.patch(
   '/:id',
   auth(USER_ROLE.admin),
-  upload.single('video'),
   parseData(),
   matchHighlightsController.updateMatchHighlights,
 );

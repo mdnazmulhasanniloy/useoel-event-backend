@@ -7,12 +7,12 @@ import { uploadToS3 } from '../../utils/s3';
 
 const createMatchHighlights = catchAsync(
   async (req: Request, res: Response) => {
-    if (req.file) {
-      req.body.video = await uploadToS3({
-        file: req.file,
-        fileName: `videos/highlight_match/${Math.floor(100000 + Math.random() * 900000)}`,
-      });
-    }
+    // if (req.file) {
+    //   req.body.video = await uploadToS3({
+    //     file: req.file,
+    //     fileName: `videos/highlight_match/${Math.floor(100000 + Math.random() * 900000)}`,
+    //   });
+    // }
     const result = await matchHighlightsService.createMatchHighlights(req.body);
     sendResponse(res, {
       statusCode: 201,
@@ -52,12 +52,12 @@ const getMatchHighlightsById = catchAsync(
 );
 const updateMatchHighlights = catchAsync(
   async (req: Request, res: Response) => {
-    if (req.file) {
-      req.body.video = await uploadToS3({
-        file: req.file,
-        fileName: `videos/highlight_match/${Math.floor(100000 + Math.random() * 900000)}`,
-      });
-    }
+    // if (req.file) {
+    //   req.body.video = await uploadToS3({
+    //     file: req.file,
+    //     fileName: `videos/highlight_match/${Math.floor(100000 + Math.random() * 900000)}`,
+    //   });
+    // }
     const result = await matchHighlightsService.updateMatchHighlights(
       req.params.id,
       req.body,

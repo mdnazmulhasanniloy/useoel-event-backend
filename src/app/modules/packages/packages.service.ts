@@ -16,7 +16,10 @@ const createPackages = async (payload: IPackage) => {
 };
 
 const getAllPackages = async (query: Record<string, any>) => {
-  const packagesModel = new QueryBuilder(Package.find(), query)
+  const packagesModel = new QueryBuilder(
+    Package.find({ isDeleted: false }),
+    query,
+  )
     .search(['title'])
     .filter()
     .paginate()
@@ -33,7 +36,7 @@ const getAllPackages = async (query: Record<string, any>) => {
 
 const getPackagesById = async (id: string) => {
   const result = await Package.findById(id);
-  if (!result) {
+  if (!result || result?.isDeleted) {
     throw new AppError(httpStatus.NOT_FOUND, 'Packages not found');
   }
   return result;

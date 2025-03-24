@@ -5,6 +5,8 @@ import AppError from '../../error/AppError';
 import { IUser } from './user.interface';
 import { User } from './user.models';
 import QueryBuilder from '../../builder/QueryBuilder';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 export type IFilter = {
   searchTerm?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,7 +15,20 @@ export type IFilter = {
 const createUser = async (payload: IUser): Promise<IUser> => {
   const isExist = await User.isUserExist(payload.email as string);
 
-  if (isExist) {
+  if (isExist && !isExist?.verification?.status) {
+    const { email, ...updateData } = payload;
+    updateData.password = await bcrypt.hash(
+      payload?.password,
+      Number(config.bcrypt_salt_rounds),
+    );
+    const user = await User.findByIdAndUpdate(isExist?._id, updateData, {
+      new: true,
+    });
+    if (!user) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'user creation failed');
+    }
+    return user;
+  } else if (isExist && isExist?.verification?.status) {
     throw new AppError(
       httpStatus.FORBIDDEN,
       'User already exists with this email',

@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 
 export interface IEvents {
   image: string;
@@ -13,6 +13,7 @@ export interface IEvents {
   registrationEndTime: String;
   maxParticipants: Number;
   remainingParticipants: Number;
+  registered: ObjectId[];
   rounds: Number;
   isDeleted: boolean;
 }

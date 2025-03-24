@@ -1,8 +1,6 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 import { IEvents, IEventsModules } from './events.interface';
 import { category, EVENT_STATUS } from './events.constants';
-
- 
 
 const eventsSchema = new Schema<IEvents>(
   {
@@ -22,6 +20,7 @@ const eventsSchema = new Schema<IEvents>(
     maxParticipants: { type: Number, required: true },
     remainingParticipants: { type: Number },
     rounds: { type: Number, default: 1 },
+    registered: [{ type: Types.ObjectId, default: null }],
     isDeleted: { type: Boolean, default: false },
   },
   {

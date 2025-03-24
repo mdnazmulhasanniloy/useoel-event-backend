@@ -3,6 +3,7 @@ export enum modeType {
   RefundRequest = 'refundRequest',
   JoiningRequests = 'JoiningRequests',
   Order = 'Order',
+  payment = 'Payment',
 }
 export interface TNotification {
   receiver: ObjectId;

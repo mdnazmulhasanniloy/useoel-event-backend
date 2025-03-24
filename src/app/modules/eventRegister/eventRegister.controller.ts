@@ -61,9 +61,12 @@ const updateEventRegister = catchAsync(async (req: Request, res: Response) => {
 });
 
 const acceptEventRegister = catchAsync(async (req: Request, res: Response) => {
-  const result = await eventRegisterService.updateEventRegister(req.params.id, {
-    status: 'accept',
-  });
+  const result = await eventRegisterService.acceptEventRegister(
+    req.params.id,
+    {
+      status: 'accept',
+    }, 
+  );
   sendResponse(res, {
     statusCode: 200,
     success: true,
