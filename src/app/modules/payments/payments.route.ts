@@ -7,7 +7,7 @@ const router = Router();
 
 router.post(
   '/checkout',
-  auth(USER_ROLE.service_provider),
+  auth(USER_ROLE.coach),
   paymentsController.checkout,
 );
 router.get('/confirm-payment', paymentsController.confirmPayment);

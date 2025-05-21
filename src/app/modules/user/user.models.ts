@@ -71,7 +71,6 @@ const userSchema: Schema<IUser> = new Schema(
         type: Boolean,
         default: false,
       },
-     
     },
     expireAt: {
       type: Date,
@@ -79,7 +78,7 @@ const userSchema: Schema<IUser> = new Schema(
         const expireAt = new Date();
 
         // return expireAt.setHours(expireAt.getHours() + 48);
-        return expireAt.setMinutes(expireAt.getMinutes() + 1);
+        return expireAt.setMinutes(expireAt.getMinutes() + 20);
       },
     },
 
@@ -101,6 +100,7 @@ const userSchema: Schema<IUser> = new Schema(
     timestamps: true,
   },
 );
+
 userSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
 
 userSchema.pre('save', async function (next) {

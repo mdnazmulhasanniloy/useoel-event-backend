@@ -8,7 +8,7 @@ export interface IEvents {
   scoringStyle: string;
   status: string;
   Round: Number;
-  roles: string;
+  rules: string;
   registrationStartTime: string;
   registrationEndTime: String;
   maxParticipants: Number;

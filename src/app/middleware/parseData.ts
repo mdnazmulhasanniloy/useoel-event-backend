@@ -5,7 +5,6 @@ const parseData = () => {
     if (req?.body?.data) {
       req.body = JSON.parse(req.body.data);
     }
-
     next();
   });
 };

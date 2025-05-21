@@ -5,7 +5,6 @@ export const USER_ROLE = {
   user: 'user',
   player: 'player',
   coach: 'coach',
-  team: 'team',
 };
 
 export const SIGN_UP_STYLE = {
@@ -25,7 +24,6 @@ export const Role = [
   'user',
   'player',
   'coach',
-  'team',
 ];
 
 export const userSearchableFields = ['shopId', 'email'];

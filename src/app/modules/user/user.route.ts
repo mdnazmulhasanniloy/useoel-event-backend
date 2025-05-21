@@ -25,8 +25,7 @@ router.patch(
     USER_ROLE.super_admin,
     USER_ROLE.coach,
     USER_ROLE?.player,
-    USER_ROLE.user,
-    USER_ROLE.team,
+    USER_ROLE.user, 
   ),
   upload.fields([
     { name: 'profile', maxCount: 1 },
@@ -53,8 +52,7 @@ router.delete(
     USER_ROLE.super_admin,
     USER_ROLE.coach,
     USER_ROLE?.player,
-    USER_ROLE.user,
-    USER_ROLE.team,
+    USER_ROLE.user, 
   ),
   userController.deleteMYAccount,
 );
@@ -67,8 +65,7 @@ router.delete(
     USER_ROLE.super_admin,
     USER_ROLE.coach,
     USER_ROLE.player,
-    USER_ROLE.user,
-    USER_ROLE.team,
+    USER_ROLE.user, 
   ),
   userController.removeVideo,
 ); 
@@ -87,8 +84,7 @@ router.get(
     USER_ROLE.super_admin,
     USER_ROLE.coach,
     USER_ROLE?.player,
-    USER_ROLE.user,
-    USER_ROLE.team,
+    USER_ROLE.user, 
   ),
   userController.getMyProfile,
 );
@@ -103,8 +99,7 @@ router.get(
     USER_ROLE.super_admin,
     USER_ROLE.coach,
     USER_ROLE?.player,
-    USER_ROLE.user,
-    USER_ROLE.team,
+    USER_ROLE.user, 
   ),
   userController.getAllUser,
 );

@@ -9,12 +9,12 @@ import Payment from './payments.models';
 import { User } from '../user/user.models';
 import { createCheckoutSession } from './payments.utils';
 import { startSession } from 'mongoose';
-import { IPackage } from '../packages/packages.interface'; 
+import { IPackage } from '../packages/packages.interface';
 import { modeType } from '../notification/notification.interface';
-import { USER_ROLE } from '../user/user.constants'; 
+import { USER_ROLE } from '../user/user.constants';
 import moment from 'moment';
 import { IUser } from '../user/user.interface';
-import { Notification } from '../notification/notification.model'; 
+import { Notification } from '../notification/notification.model';
 import Package from '../packages/packages.models';
 import generateRandomString from '../../utils/generateRandomString';
 
@@ -321,13 +321,38 @@ const getEarnings = async () => {
   return { totalEarnings, todayEarnings, allData };
 };
 
-
 const dashboardData = async (query: Record<string, any>) => {
   const usersData = await User.aggregate([
     {
       $facet: {
         totalUsers: [
-          { $match: { 'verification.status': true } },
+          {
+            $match: {
+              'verification.status': true,
+              isDeleted: false,
+              role: USER_ROLE.user,
+            },
+          },
+          { $count: 'count' },
+        ],
+        totalPlayers: [
+          {
+            $match: {
+              role: USER_ROLE.player,
+              isDeleted: false,
+              'verification.status': true,
+            },
+          },
+          { $count: 'count' },
+        ],
+        totalCoach: [
+          {
+            $match: {
+              role: USER_ROLE.coach,
+              isDeleted: false,
+              'verification.status': true,
+            },
+          },
           { $count: 'count' },
         ],
         userDetails: [
@@ -337,9 +362,9 @@ const dashboardData = async (query: Record<string, any>) => {
               _id: 1,
               name: 1,
               email: 1,
-              coin: 1,
               role: 1,
-              referenceId: 1,
+              country: 1,
+              status: 1,
               createdAt: 1,
             },
           },
@@ -474,9 +499,8 @@ const dashboardData = async (query: Record<string, any>) => {
     {
       $match: {
         'verification.status': true,
-        role:
-          query.role === USER_ROLE.user,
-            // : USER_ROLE.service_provider,
+        role: query.role === USER_ROLE.user,
+        // : USER_ROLE.service_provider,
         createdAt: {
           $gte: startOfUserYear.toDate(),
           $lte: endOfUserYear.toDate(),

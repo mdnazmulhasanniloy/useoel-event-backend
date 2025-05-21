@@ -18,13 +18,13 @@ const checkout = catchAsync(async (req: Request, res: Response) => {
 
 const confirmPayment = catchAsync(async (req: Request, res: Response) => {
   const result = await paymentsService.confirmPayment(req?.query);
-  res.redirect(`${config.success_url}?subscriptionId=${result?.subscription}`);
-  // sendResponse(res, {
-  //   success: true,
-  //   statusCode: httpStatus.OK,
-  //   data: result,
-  //   message: 'payment successful',
-  // });
+  // res.redirect(`${config.success_url}?subscriptionId=${result?.subscription}`);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    data: result,
+    message: 'payment successful',
+  });
 });
 
 const dashboardData = catchAsync(async (req: Request, res: Response) => {

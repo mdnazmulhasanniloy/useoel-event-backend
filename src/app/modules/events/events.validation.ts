@@ -30,8 +30,11 @@ const createEventSchema = z.object({
     name: z.string().min(1, { message: 'Event name is required.' }),
     category: z.enum([...category] as [string, ...string[]]),
     ageGroup: z.string().min(1, { message: 'Age group is required.' }),
-    scoringStyle: z.string().min(1, { message: 'Scoring style is required.' }),
-    roles: z.string().min(1, { message: 'Roles are required.' }),
+    scoringStyle: z
+      .string()
+      .min(1, { message: 'Scoring style is required.' })
+      .optional(),
+    rules: z.string().min(1, { message: 'Rules are required.' }),
     status: z
       .enum(['continue', 'upcoming', 'cancelled', 'complete'] as [
         string,
@@ -88,11 +91,9 @@ const updateEventSchema = z.object({
       ageGroup: z.string().min(1, { message: 'Age group is required.' }),
       scoringStyle: z
         .string()
-        .min(1, { message: 'Scoring style is required.' }),
-      Round: z.number().int().min(1, {
-        message: 'Round must be a positive integer greater than 0.',
-      }),
-      roles: z.string().min(1, { message: 'Roles are required.' }),
+        .min(1, { message: 'Scoring style is required.' })
+        .optional(),
+      rules: z.string().min(1, { message: 'Rules are required.' }),
       status: z
         .enum(['continue', 'upcoming', 'cancelled', 'complete'] as [
           string,

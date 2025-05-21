@@ -47,7 +47,7 @@ const createUser = async (payload: IUser): Promise<IUser> => {
 };
 
 const getAllUser = async (query: Record<string, any>) => {
-  const userModel = new QueryBuilder(User.find(), query)
+  const userModel = new QueryBuilder(User.find({ isDeleted: false }), query)
     .search(['name', 'email', 'phoneNumber', 'status'])
     .filter()
     .paginate()
@@ -62,7 +62,7 @@ const getAllUser = async (query: Record<string, any>) => {
 
 const geUserById = async (id: string) => {
   const result = await User.findById(id);
-  if (!result) {
+  if (!result || result.isDeleted) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
   return result;

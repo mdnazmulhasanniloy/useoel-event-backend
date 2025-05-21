@@ -9,13 +9,13 @@ const assignGameSchema = new Schema<IAssignGame>(
     rounds: { type: String, required: true },
     status: { type: String, enum: ['ongoing', 'complete'], default: 'ongoing' },
     winner: { type: Schema.Types.ObjectId, ref: 'User', default: null },
-    video:{
-      type:String,
-      default:null
+    video: {
+      type: String,
+      default: null,
     },
     result: {
-      teamA: { type: Number, required: true },
-      teamB: { type: Number, required: true },
+      teamA: { type: Number, required: false },
+      teamB: { type: Number, required: false },
     },
     isDeleted: { type: Boolean, default: false },
   },

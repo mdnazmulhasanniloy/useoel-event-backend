@@ -15,6 +15,7 @@ import { packagesRoutes } from '../modules/packages/packages.route';
 import { joiningRequestsRoutes } from '../modules/joiningRequests/joiningRequests.route';
 import { matchHighlightsRoutes } from '../modules/matchHighlights/matchHighlights.route';
 import { assignGameRoutes } from '../modules/assignGame/assignGame.route';
+import { paymentsRoutes } from '../modules/payments/payments.route';
 
 const router = Router();
 const moduleRoutes = [
@@ -77,6 +78,10 @@ const moduleRoutes = [
   {
     path: '/packages',
     route: packagesRoutes,
+  },
+  {
+    path: '/payments',
+    route: paymentsRoutes,
   },
   {
     path: '/match-highlight',
