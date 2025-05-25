@@ -1,14 +1,6 @@
 import * as z from 'zod';
 
-const TeamPlayerSchema = z.object({
-  name: z.string({ required_error: 'Player name is required' }),
-  email: z
-    .string({ required_error: 'Player email is required' })
-    .email({ message: 'Invalid email format' }),
-  image: z
-    .string({ required_error: 'Player image URL is required' })
-    .url({ message: 'Invalid image URL format' }),
-});
+ 
 
 const createTeamSchema = z.object({
   body: z.object({
@@ -17,8 +9,7 @@ const createTeamSchema = z.object({
     state: z.string({ required_error: 'State is required' }),
     country: z.string({ required_error: 'Country is required' }),
     teamCategory: z.string({ required_error: 'Team category is required' }),
-    ageGroup: z.string({ required_error: 'Age group is required' }),
-    player: z.array(TeamPlayerSchema).optional(), 
+    ageGroup: z.string({ required_error: 'Age group is required' }), 
   }),
 });
 const updateTeamSchema = z.object({
@@ -29,16 +20,12 @@ const updateTeamSchema = z.object({
       state: z.string({ required_error: 'State is required' }),
       country: z.string({ required_error: 'Country is required' }),
       teamCategory: z.string({ required_error: 'Team category is required' }),
-      ageGroup: z.string({ required_error: 'Age group is required' }), 
-      player: z.array(TeamPlayerSchema).optional(), 
+      ageGroup: z.string({ required_error: 'Age group is required' }),  
     })
     .deepPartial(),
 });
 
-const addPlayerSchema = z.object({
-  body: TeamPlayerSchema,
-});
-
+ 
 const removePlayerSchema = z.object({
   body: z.object({
     email: z
@@ -49,7 +36,6 @@ const removePlayerSchema = z.object({
 
 export const teamValidationSchema = {
   createTeamSchema,
-  updateTeamSchema,
-  addPlayerSchema,
+  updateTeamSchema, 
   removePlayerSchema,
 };

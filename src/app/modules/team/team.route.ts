@@ -23,8 +23,6 @@ router.post(
 router.patch(
   '/add-player',
   auth(USER_ROLE.coach),
-
-  validateRequest(teamValidationSchema.addPlayerSchema),
   teamController.addPlayerInTeam,
 );
 

@@ -1,10 +1,12 @@
 import httpStatus from 'http-status';
-import { ITeam, ITeamPlayer } from './team.interface';
+import { ITeam } from './team.interface';
 import Team from './team.models';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../error/AppError';
 import { User } from '../user/user.models';
 import { startSession } from 'mongoose';
+import { notificationServices } from '../notification/notification.service';
+import { modeType } from '../notification/notification.interface';
 
 export const createTeam = async (payload: any) => {
   const session = await startSession();
@@ -71,7 +73,10 @@ const getTeamById = async (id: string) => {
   return result;
 };
 
-const addPlayerInTeam = async (userId: string, payload: ITeamPlayer) => {
+const addPlayerInTeam = async (
+  userId: string,
+  payload: { playerId: string },
+) => {
   const team = await Team.findOne({ user: userId });
   if (!team) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found for the team');
@@ -81,20 +86,10 @@ const addPlayerInTeam = async (userId: string, payload: ITeamPlayer) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'Team is full');
   }
 
-  const isDuplicate = team.player.some(
-    player => player.email === payload.email,
-  );
-  if (isDuplicate) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      'Player with this email already exists in the team',
-    );
-  }
-
   const result = await Team.findByIdAndUpdate(
     team?._id,
     {
-      $push: { player: payload },
+      $push: { player: { $each: payload.playerId } },
     },
     { new: true },
   );
@@ -108,23 +103,17 @@ const addPlayerInTeam = async (userId: string, payload: ITeamPlayer) => {
   return result;
 };
 
-const removePlayerFromTeam = async (userId: string, playerEmail: string) => {
+const removePlayerFromTeam = async (userId: string, playerId: string) => {
   // Step 1: Find the team by userId and validate if it exists
   const team = await Team.findOne({ user: userId });
   if (!team) {
     throw new AppError(httpStatus.NOT_FOUND, 'Team not found for the user');
   }
 
-  // Step 2: Check if the player exists in the team
-  const playerExists = team.player.some(player => player.email === playerEmail);
-  if (!playerExists) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Player not found in the team');
-  }
-
   // Step 3: Remove the player from the team using $pull
   const result = await Team.findByIdAndUpdate(
     team._id,
-    { $pull: { player: { email: playerEmail } } },
+    { $pull: { player: playerId } },
     { new: true },
   );
 
@@ -134,7 +123,13 @@ const removePlayerFromTeam = async (userId: string, playerEmail: string) => {
       'Failed to remove player from the team',
     );
   }
-
+  notificationServices.insertNotificationIntoDb({
+    receiver: playerId,
+    message: 'You have been removed from a team',
+    description: `You have been removed from the team "<b>${team.name}</b>". We wish you the best in your future endeavors.`,
+    refference: result?._id,
+    model_type: modeType.Team,
+  });
   return result; // Return the updated team
 };
 

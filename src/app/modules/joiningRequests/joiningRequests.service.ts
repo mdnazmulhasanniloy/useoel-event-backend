@@ -41,7 +41,7 @@ const getAllJoiningRequests = async (query: Record<string, any>) => {
     JoiningRequests.find({ isDeleted: false }),
     query,
   )
-    .search([''])
+    .search(['status'])
     .filter()
     .paginate()
     .sort()
@@ -99,18 +99,6 @@ const approvedRequest = async (id: string) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'Team is full');
   }
 
-  const isDuplicate = (request?.team as ITeam).player.some(
-    player => player?.email === (request?.player as IUser)?.email,
-  );
-
-  
-  if (isDuplicate) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      'you are already exists in the team',
-    );
-  }
-
   try {
     const result = await JoiningRequests.findByIdAndUpdate(
       id,
@@ -137,13 +125,8 @@ const approvedRequest = async (id: string) => {
 
     const team = await Team.findByIdAndUpdate(
       result?.team,
-      {
-        player: {
-          name: player.name,
-          email: player.email,
-          image: player.profile,
-        },
-      },
+
+      { $push: { player: player?._id } },
       { new: true, upsert: false, session },
     );
 
