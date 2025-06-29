@@ -2,6 +2,7 @@ import { Model, ObjectId } from 'mongoose';
 
 export interface IMatchHighlights {
   videoUrl: string;
+  thumbnailUrl: string;
   title: string;
   teamA: ObjectId;
   teamB: ObjectId;

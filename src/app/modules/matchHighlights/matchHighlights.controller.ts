@@ -1,18 +1,17 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { matchHighlightsService } from './matchHighlights.service';
-import sendResponse from '../../utils/sendResponse';
-import { storeFile } from '../../utils/fileHelper';
+import sendResponse from '../../utils/sendResponse'; 
 import { uploadToS3 } from '../../utils/s3';
 
 const createMatchHighlights = catchAsync(
   async (req: Request, res: Response) => {
-    // if (req.file) {
-    //   req.body.video = await uploadToS3({
-    //     file: req.file,
-    //     fileName: `videos/highlight_match/${Math.floor(100000 + Math.random() * 900000)}`,
-    //   });
-    // }
+    if (req.file) {
+      req.body.thumbnailUrl = await uploadToS3({
+        file: req.file,
+        fileName: `images/highlight_match/${Math.floor(100000 + Math.random() * 900000)}`,
+      });
+    }
     const result = await matchHighlightsService.createMatchHighlights(req.body);
     sendResponse(res, {
       statusCode: 201,
@@ -52,12 +51,12 @@ const getMatchHighlightsById = catchAsync(
 );
 const updateMatchHighlights = catchAsync(
   async (req: Request, res: Response) => {
-    // if (req.file) {
-    //   req.body.video = await uploadToS3({
-    //     file: req.file,
-    //     fileName: `videos/highlight_match/${Math.floor(100000 + Math.random() * 900000)}`,
-    //   });
-    // }
+    if (req.file) {
+      req.body.thumbnailUrl = await uploadToS3({
+        file: req.file,
+        fileName: `images/highlight_match/${Math.floor(100000 + Math.random() * 900000)}`,
+      });
+    }
     const result = await matchHighlightsService.updateMatchHighlights(
       req.params.id,
       req.body,

@@ -11,6 +11,16 @@ const roundsSchema = new Schema<IRounds>(
       type: String,
       enum: Object.values(gameType),
     },
+    event: {
+      type: Schema.Types.ObjectId,
+      ref: 'Events',
+      required: [true, 'Event id is required'],
+    },
+    coach: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'User id is required'],
+    },
     game: {
       type: Schema.Types.ObjectId,
       refPath: 'gameType',

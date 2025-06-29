@@ -9,6 +9,8 @@ export enum gameType {
 export interface IRounds {
   roundName: string;
   gameType: gameType;
+  event: ObjectId;
+  coach: ObjectId;
   game: ObjectId;
   gettingScore: number;
   reviewScore: number;

@@ -47,7 +47,10 @@ const createUser = async (payload: IUser): Promise<IUser> => {
 };
 
 const getAllUser = async (query: Record<string, any>) => {
-  const userModel = new QueryBuilder(User.find({ isDeleted: false }), query)
+  const userModel = new QueryBuilder(
+    User.find({ isDeleted: false }).populate({ path: 'team' }),
+    query,
+  )
     .search(['name', 'email', 'phoneNumber', 'status'])
     .filter()
     .paginate()
@@ -61,13 +64,37 @@ const getAllUser = async (query: Record<string, any>) => {
 };
 
 const geUserById = async (id: string) => {
-  const result = await User.findById(id);
+  const result = await User.findById(id).populate({ path: 'team' });
   if (!result || result.isDeleted) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
   return result;
 };
 
+const availability = async (id: string) => {
+  // const isAvailable = await User.findById(id, 'available').then(
+  //   user => user?.available ?? user?.available,
+  // );
+  // const user = await User.findByIdAndUpdate(
+  //   id,
+  //   {
+  //     available: !isAvailable,
+  //   },
+  //   { new: true },
+  // );
+
+  const user = await User.findByIdAndUpdate(
+    id,
+    { $bit: { available: { xor: 1 } } }, // toggles boolean field
+    { new: true, projection: { available: 1 } },
+  );
+
+  if (!user) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'User updating failed');
+  }
+
+  return user;
+};
 const updateUser = async (id: string, payload: Partial<IUser>) => {
   const { videos, ...updateData } = payload;
 
@@ -143,5 +170,6 @@ export const userService = {
   updateUser,
   deleteUser,
   removeVideo,
+  availability,
   // addVideo,
 };

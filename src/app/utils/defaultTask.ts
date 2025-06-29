@@ -21,7 +21,6 @@ export async function defaultTask() {
       },
     });
   }
-  console.log("🚀 ~ defaultTask ~ admin:", admin)
 
   const content = await Contents.findOne({});
   if (!content) {

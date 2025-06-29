@@ -10,6 +10,12 @@ const matchHighlightsSchema = new Schema<IMatchHighlights>(
     videoUrl: {
       type: String,
       default: null,
+      required: true,
+    },
+    thumbnailUrl: {
+      type: String,
+      default: null,
+      required: true,
     },
     title: {
       type: String,

@@ -6,8 +6,8 @@ import {
 
 const joiningRequestsSchema = new Schema<IJoiningRequests>(
   {
-    player: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    team: { type: Schema.Types.ObjectId, ref: 'Team', required: true },
+    player: { type: Schema.Types.ObjectId, ref: 'User', default: null },
+    team: { type: Schema.Types.ObjectId, ref: 'Team', default: null },
     status: {
       type: String,
       enum: ['pending', 'accept', 'rejected'],

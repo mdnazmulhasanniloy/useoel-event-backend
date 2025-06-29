@@ -6,14 +6,13 @@ import { storeFile } from '../../utils/fileHelper';
 import { uploadToS3 } from '../../utils/s3';
 
 const createEvents = catchAsync(async (req: Request, res: Response) => {
- 
   if (req.file) {
     req.body.image = await uploadToS3({
       file: req.file,
       fileName: `images/events/${Math.floor(100000 + Math.random() * 900000)}`,
     });
   }
- 
+
   const result = await eventsService.createEvents(req.body);
   sendResponse(res, {
     statusCode: 201,
@@ -29,6 +28,15 @@ const getAllEvents = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: 'All events fetched successfully',
+    data: result,
+  });
+});
+const getLeaderBoard = catchAsync(async (req: Request, res: Response) => {
+  const result = await eventsService.getLeaderBoard(req.query);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Event Leaderboard fetched successfully',
     data: result,
   });
 });
@@ -74,4 +82,5 @@ export const eventsController = {
   getEventsById,
   updateEvents,
   deleteEvents,
+  getLeaderBoard,
 };

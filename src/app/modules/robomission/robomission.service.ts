@@ -64,6 +64,8 @@ const createRobomission = async (payload: IRobomission) => {
             gameType: gameType.robomission,
             //@ts-ignore
             game: result[0]._id,
+            event: gameData.event,
+            coach: gameData.coach,
           })),
         )
       : [];

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { joiningRequestsService } from './joiningRequests.service';
 import sendResponse from '../../utils/sendResponse';
+import { USER_ROLE } from '../user/user.constants';
 
 const createJoiningRequests = catchAsync(
   async (req: Request, res: Response) => {
@@ -30,6 +31,9 @@ const getAllJoiningRequests = catchAsync(
 );
 const getMyTeamJoiningRequests = catchAsync(
   async (req: Request, res: Response) => {
+    if(req.user.role === USER_ROLE.coach){
+      req.query['player'] = req?.user?.userId;
+    }
     req.query['player'] = req?.user?.userId;
     const result = await joiningRequestsService.getAllJoiningRequests(
       req.query,
@@ -42,11 +46,12 @@ const getMyTeamJoiningRequests = catchAsync(
     });
   },
 );
+ 
 
 const getJoiningRequestsById = catchAsync(
   async (req: Request, res: Response) => {
     const result = await joiningRequestsService.getJoiningRequestsById(
-      req.params.id,
+      req.params.body,
     );
     sendResponse(res, {
       statusCode: 200,

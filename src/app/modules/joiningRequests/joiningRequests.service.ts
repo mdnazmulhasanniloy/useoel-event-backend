@@ -13,11 +13,16 @@ import { IUser } from '../user/user.interface';
 
 const createJoiningRequests = async (payload: IJoiningRequests) => {
   // Check if the player has already requested to join the team
-  const team = await Team.findById(payload.team);
-  if (!team) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Team not found');
+  if (payload?.team) {
+    const team = await Team.findById(payload.team);
+    if (!team) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Team not found');
+    }
   }
-  const result = await JoiningRequests.create(payload);
+  const result = (await JoiningRequests.create(payload)).populate([
+    'team',
+    'player',
+  ]);
   if (!result) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -25,13 +30,13 @@ const createJoiningRequests = async (payload: IJoiningRequests) => {
     );
   }
 
-  notificationServices.insertNotificationIntoDb({
-    receiver: result.player,
-    message: 'You have received a team invite!',
-    description: `The team "<b>${team.name}</b>" has invited you to join them. Check your joining requests for more details.`,
-    refference: result?._id,
-    model_type: modeType.JoiningRequests,
-  });
+  // notificationServices.insertNotificationIntoDb({
+  //   receiver: result.player,
+  //   message: 'You have received a team invite!',
+  //   description: `The team "<b>${team.name}</b>" has invited you to join them. Check your joining requests for more details.`,
+  //   refference: result?._id,
+  //   model_type: modeType.JoiningRequests,
+  // });
 
   return result;
 };

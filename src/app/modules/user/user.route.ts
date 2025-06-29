@@ -34,6 +34,18 @@ router.patch(
   parseData(),
   userController.updateMyProfile,
 );
+router.patch(
+  '/change-availability',
+  auth(
+    USER_ROLE.admin,
+    USER_ROLE.sub_admin,
+    USER_ROLE.super_admin,
+    USER_ROLE.coach,
+    USER_ROLE.player,
+    USER_ROLE.user,
+  ),
+  userController.availability,
+);
 
  
 router.patch(
@@ -43,6 +55,7 @@ router.patch(
   parseData(),
   userController.updateUser,
 ); 
+  
 
 router.delete(
   '/delete-my-account',
@@ -51,7 +64,7 @@ router.delete(
     USER_ROLE.sub_admin,
     USER_ROLE.super_admin,
     USER_ROLE.coach,
-    USER_ROLE?.player,
+    USER_ROLE.player,
     USER_ROLE.user, 
   ),
   userController.deleteMYAccount,

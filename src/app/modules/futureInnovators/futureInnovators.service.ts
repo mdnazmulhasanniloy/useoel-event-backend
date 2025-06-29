@@ -119,6 +119,8 @@ const createFutureInnovators = async (payload: IFutureInnovators) => {
             ...round,
             gameType: gameType.FutureInnovators,
             //@ts-ignore
+            event: gameData.event,
+            coach: gameData.coach,
             game: result[0]._id,
           })),
         )
@@ -134,11 +136,11 @@ const createFutureInnovators = async (payload: IFutureInnovators) => {
     session.endSession();
 
     return result[0];
-  } catch (error:any) {
+  } catch (error: any) {
     console.log('🚀 ~ error:', error);
     await session.abortTransaction();
     session.endSession();
-        throw new AppError(httpStatus.BAD_REQUEST, error.message);
+    throw new AppError(httpStatus.BAD_REQUEST, error.message);
   }
 };
 

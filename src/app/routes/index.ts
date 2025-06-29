@@ -16,9 +16,15 @@ import { joiningRequestsRoutes } from '../modules/joiningRequests/joiningRequest
 import { matchHighlightsRoutes } from '../modules/matchHighlights/matchHighlights.route';
 import { assignGameRoutes } from '../modules/assignGame/assignGame.route';
 import { paymentsRoutes } from '../modules/payments/payments.route';
+import { contentsRoutes } from '../modules/contents/contents.route';
+import { dashboardRoutes } from '../modules/dashboard/dashboard.route';
 
 const router = Router();
 const moduleRoutes = [
+  {
+    path: '/contents',
+    route: contentsRoutes,
+  },
   {
     path: '/uploads',
     route: uploadRouter,
@@ -86,6 +92,10 @@ const moduleRoutes = [
   {
     path: '/match-highlight',
     route: matchHighlightsRoutes,
+  },
+  {
+    path: '/dashboard',
+    route: dashboardRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

@@ -32,6 +32,7 @@ router.delete(
   auth(USER_ROLE.admin, USER_ROLE.sub_admin, USER_ROLE.super_admin),
   eventsController.deleteEvents,
 );
+router.get('/leaderboard', eventsController.getLeaderBoard);
 router.get('/:id', eventsController.getEventsById);
 router.get('/', eventsController.getAllEvents);
 

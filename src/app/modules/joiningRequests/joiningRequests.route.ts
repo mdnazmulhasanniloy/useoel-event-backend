@@ -33,8 +33,8 @@ router.delete(
  
 router.get(
   '/request',
-  auth(USER_ROLE.player),
-  joiningRequestsController.getJoiningRequestsById,
+  auth(USER_ROLE.player, USER_ROLE.coach),
+  joiningRequestsController.getMyTeamJoiningRequests,
 );
 
 router.get(
@@ -42,6 +42,11 @@ router.get(
   auth(USER_ROLE.player, USER_ROLE.coach),
   joiningRequestsController.getJoiningRequestsById,
 );
+// router.get(
+//   '/my-requests',
+//   auth(USER_ROLE.player, USER_ROLE.coach),
+//   joiningRequestsController.getMyRequests,
+// );
 router.get(
   '/',
   auth(USER_ROLE.admin, USER_ROLE.player, USER_ROLE.coach),

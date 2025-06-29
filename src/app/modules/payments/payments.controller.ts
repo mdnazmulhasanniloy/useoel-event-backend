@@ -18,7 +18,7 @@ const checkout = catchAsync(async (req: Request, res: Response) => {
 
 const confirmPayment = catchAsync(async (req: Request, res: Response) => {
   const result = await paymentsService.confirmPayment(req?.query);
-  // res.redirect(`${config.success_url}?subscriptionId=${result?.subscription}`);
+  // res.redirect(`${config.success_url}?payment=${result?._id}`);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

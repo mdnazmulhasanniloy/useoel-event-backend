@@ -12,6 +12,11 @@ export enum CATEGORY_NAME {
   robosporst = 'Robosporst',
   sumboBots = 'SumboBots',
 }
+export enum GAME_TYPE {
+  singleElimination = 'singleElimination',
+  doubleElimination = 'doubleElimination',
+  poolPlay = 'poolPlay',
+}
 
 export const category: string[] = [
   'RoboMission',
@@ -20,3 +25,4 @@ export const category: string[] = [
   'Robosporst',
   'SumboBots',
 ];
+ 

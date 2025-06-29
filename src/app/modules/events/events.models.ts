@@ -1,6 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
 import { IEvents, IEventsModules } from './events.interface';
-import { category, EVENT_STATUS } from './events.constants';
+import { category, EVENT_STATUS, GAME_TYPE } from './events.constants';
 
 const eventsSchema = new Schema<IEvents>(
   {
@@ -10,6 +10,11 @@ const eventsSchema = new Schema<IEvents>(
     ageGroup: { type: String, required: true },
     scoringStyle: { type: String, required: false },
     rules: { type: String, required: true },
+    gameType: {
+      type: String,
+      enum: GAME_TYPE,
+      default: null,
+    },
     status: {
       type: String,
       enum: ['continue', 'upcoming', 'cancelled', 'complete'],
