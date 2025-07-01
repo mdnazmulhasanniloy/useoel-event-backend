@@ -18,6 +18,7 @@ import { assignGameRoutes } from '../modules/assignGame/assignGame.route';
 import { paymentsRoutes } from '../modules/payments/payments.route';
 import { contentsRoutes } from '../modules/contents/contents.route';
 import { dashboardRoutes } from '../modules/dashboard/dashboard.route';
+import { matchRoutes } from '../modules/match/match.route';
 
 const router = Router();
 const moduleRoutes = [
@@ -96,6 +97,10 @@ const moduleRoutes = [
   {
     path: '/dashboard',
     route: dashboardRoutes,
+  },
+  {
+    path: '/match',
+    route: matchRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

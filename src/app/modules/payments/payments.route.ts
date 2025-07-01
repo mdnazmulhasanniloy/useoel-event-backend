@@ -5,19 +5,9 @@ import auth from '../../middleware/auth';
 
 const router = Router();
 
-router.post(
-  '/checkout',
-  auth(USER_ROLE.coach),
-  paymentsController.checkout,
-);
+router.post('/checkout', auth(USER_ROLE.coach), paymentsController.checkout);
 router.get('/confirm-payment', paymentsController.confirmPayment);
-router.get(
-  '/dashboard-data',
-  auth(USER_ROLE.admin),
-  paymentsController.dashboardData,
-);
-router.get('/earnings', auth(USER_ROLE.admin), paymentsController.getEarnings);
-// router.get('/dashboard-data', paymentsController.);
+
 router.post('/', paymentsController.createPayments);
 
 router.patch('/:id', paymentsController.updatePayments);
