@@ -5,6 +5,7 @@ import app from './app';
 import config from './app/config';
 import initializeSocketIO from './socket';
 import { defaultTask } from './app/utils/defaultTask';
+import figlet from 'figlet';
 //@ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unused-vars
 const colors = require('colors');
@@ -27,6 +28,24 @@ async function main() {
       `Socket is listening on port ${config.ip}:${config.socket_port}`.yellow
         .bold,
     );
+    /**
+     * hollywood
+     * larry3d
+     * poison
+     * stellar
+     */
+
+    //@ts-ignore
+    figlet("Nazmul Hasan",{font: "stellar"}, function (err, data) {
+      if (err) {
+        console.log("Something went wrong...");
+        console.dir(err);
+        return;
+      }
+      console.log(data);
+    });
+
+     
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore

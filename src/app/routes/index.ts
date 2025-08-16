@@ -19,6 +19,8 @@ import { paymentsRoutes } from '../modules/payments/payments.route';
 import { contentsRoutes } from '../modules/contents/contents.route';
 import { dashboardRoutes } from '../modules/dashboard/dashboard.route';
 import { matchRoutes } from '../modules/match/match.route';
+import { participantRoutes } from '../modules/participant/participant.route';
+import { leaderBoardRoutes } from '../modules/leaderBoard/leaderBoard.route';
 
 const router = Router();
 const moduleRoutes = [
@@ -101,6 +103,14 @@ const moduleRoutes = [
   {
     path: '/match',
     route: matchRoutes,
+  },
+  {
+    path: '/participant',
+    route: participantRoutes,
+  },
+  {
+    path: '/leaderboard',
+    route: leaderBoardRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

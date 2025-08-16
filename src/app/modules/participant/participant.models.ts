@@ -12,12 +12,12 @@ const participantSchema = new Schema<IParticipant>(
       type: String,
       default: null,
     },
-    isWinner: { type: Boolean, required: true },
+    isWinner: { type: Boolean, default:false },
     status: { type: String, default: null },
     team: {
       type: Types.ObjectId,
       ref: 'Team',
-      require: true,
+      require: false,default: null
     },
   },
   {

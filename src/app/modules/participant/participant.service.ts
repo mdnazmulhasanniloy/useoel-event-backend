@@ -1,4 +1,3 @@
-
 import httpStatus from 'http-status';
 import { IParticipant } from './participant.interface';
 import Participant from './participant.models';
@@ -14,8 +13,8 @@ const createParticipant = async (payload: IParticipant) => {
 };
 
 const getAllParticipant = async (query: Record<string, any>) => {
-  const participantModel = new QueryBuilder(Participant.find({isDeleted:false}), query)
-    .search([""])
+  const participantModel = new QueryBuilder(Participant.find({}), query)
+    .search([''])
     .filter()
     .paginate()
     .sort()
@@ -38,10 +37,15 @@ const getParticipantById = async (id: string) => {
   return result;
 };
 
-const updateParticipant = async (id: string, payload: Partial<IParticipant>) => {
-  const result = await Participant.findByIdAndUpdate(id, payload, { new: true });
+const updateParticipant = async (
+  id: string,
+  payload: Partial<IParticipant>,
+) => {
+  const result = await Participant.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
   if (!result || result.isDeleted) {
-    throw new AppError(httpStatus.BAD_REQUEST,'Failed to update Participant');
+    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to update Participant');
   }
   return result;
 };
@@ -50,7 +54,7 @@ const deleteParticipant = async (id: string) => {
   const result = await Participant.findByIdAndUpdate(
     id,
     { isDeleted: true },
-    { new: true }
+    { new: true },
   );
   if (!result) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete participant');

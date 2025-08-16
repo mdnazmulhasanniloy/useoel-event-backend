@@ -63,8 +63,10 @@
     "zod": "^3.23.8"
   },
   "dependencies": {
+    "@types/figlet": "^1.7.0",
     "@types/node-schedule": "^2.1.7",
     "@types/uuid": "^10.0.0",
+    "figlet": "^1.8.1",
     "node-schedule": "^2.1.1",
     "nodemon": "^3.1.9",
     "socket.io": "^4.7.5",

@@ -5,6 +5,13 @@ import { USER_ROLE } from '../user/user.constants';
 
 const router = Router();
 
+
+router.post(
+  '/create-multy',
+  auth(USER_ROLE.admin, USER_ROLE.sub_admin, USER_ROLE.super_admin),
+  matchController.createMultiMatch,
+);
+
 router.post(
   '/',
   auth(USER_ROLE.admin, USER_ROLE.sub_admin, USER_ROLE.super_admin),

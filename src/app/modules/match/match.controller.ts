@@ -14,6 +14,16 @@ const createMatch = catchAsync(async (req: Request, res: Response) => {
   });
 
 });
+const createMultiMatch = catchAsync(async (req: Request, res: Response) => {
+ const result = await matchService.createMultiMatch(req.body);
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Matches created successfully',
+    data: result,
+  });
+
+});
 
 const getAllMatch = catchAsync(async (req: Request, res: Response) => {
 
@@ -65,5 +75,5 @@ export const matchController = {
   getAllMatch,
   getMatchById,
   updateMatch,
-  deleteMatch,
+  deleteMatch,createMultiMatch
 };

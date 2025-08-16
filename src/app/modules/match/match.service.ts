@@ -57,6 +57,68 @@ const createMatch = async (payload: IMatch) => {
   }
 };
 
+const createMultiMatch = async (payloads: IMatch[]) => { 
+  console.log("🚀 ~ createMultiMatch ~ payloads:", payloads)
+  const session = await startSession();
+  session.startTransaction();
+
+  try {
+    // Validate all events exist
+    const eventIds = [...new Set(payloads.map(payload => payload.event))];
+    const events = await Events.find({ _id: { $in: eventIds } }).session(session);
+    
+    console.log("🚀 ~ createMultiMatch ~ events:", events)
+    // Check if all events were found
+    if (events.length !== eventIds.length) {
+      const foundEventIds = events.map(event => event._id.toString());
+      const missingEventId = eventIds.find(id => !foundEventIds.includes(id.toString()));
+      throw new AppError(httpStatus.BAD_REQUEST, `Event not found: ${missingEventId}`);
+    }
+
+    const createdMatches = [];
+
+    // Process each match creation
+    for (const payload of payloads) {
+      // Separate participants and match data
+      const { participants, ...matchData } = payload;
+
+      // Create match
+      const match = await Match.create([{ ...matchData }], { session });
+      if (!match?.[0]) {
+        throw new AppError(httpStatus.BAD_REQUEST, 'Match creation failed');
+      }
+
+      // Attach match ID to each participant
+      const participantsWithMatch = participants.map(participant => ({
+        ...participant,
+        match: match[0]._id,
+      }));
+
+      // Create participants
+      const createdParticipants = await Participant.insertMany(
+        participantsWithMatch,
+        { session }
+      );
+      if (!createdParticipants.length) {
+        throw new AppError(
+          httpStatus.BAD_REQUEST,
+          'Failed to create participants'
+        );
+      }
+
+      createdMatches.push(match[0]);
+    }
+
+    await session.commitTransaction();
+    session.endSession();
+    return createdMatches 
+  } catch (error:any) {
+    await session.abortTransaction();
+    session.endSession();
+    throw new AppError(httpStatus.BAD_REQUEST, error?.message ?? "server internal error");
+  }
+};
+
 const getAllMatch = async (query: Record<string, any>) => {
   const { filters, pagination } = await pickQuery(query);
 
@@ -247,5 +309,5 @@ export const matchService = {
   getAllMatch,
   getMatchById,
   updateMatch,
-  deleteMatch,
+  deleteMatch,createMultiMatch
 };

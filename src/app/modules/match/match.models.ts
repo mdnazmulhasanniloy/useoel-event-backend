@@ -4,15 +4,19 @@ import { MATCH_STATE } from './match.constants';
 
 const matchSchema = new Schema<IMatch>(
   {
+    id: {
+      type:String, 
+      default: null,
+    },
     event: {
       type: Types.ObjectId,
       ref: 'Events',
       required: true,
     },
     name: { type: String, default: null },
+   
     nextMatchId: {
-      type: Types.ObjectId,
-      ref: 'Match',
+      type:String, 
       default: null,
     },
     tournamentRoundText: { type: String, default: null },
