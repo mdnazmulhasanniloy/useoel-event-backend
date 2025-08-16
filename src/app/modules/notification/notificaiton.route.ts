@@ -13,8 +13,7 @@ router.get(
     USER_ROLE.super_admin,
     USER_ROLE.coach,
     USER_ROLE?.player,
-    USER_ROLE.user,
-    USER_ROLE.team,
+    USER_ROLE.user, 
   ),
   notificationControllers.getAllNotifications,
 );
@@ -26,8 +25,7 @@ router.patch(
     USER_ROLE.super_admin,
     USER_ROLE.coach,
     USER_ROLE?.player,
-    USER_ROLE.user,
-    USER_ROLE.team,
+    USER_ROLE.user, 
   ),
   notificationControllers.markAsDone,
 );
@@ -39,8 +37,7 @@ router.delete(
     USER_ROLE.super_admin,
     USER_ROLE.coach,
     USER_ROLE?.player,
-    USER_ROLE.user,
-    USER_ROLE.team,
+    USER_ROLE.user, 
   ),
   notificationControllers.deleteAllNotifications,
 );

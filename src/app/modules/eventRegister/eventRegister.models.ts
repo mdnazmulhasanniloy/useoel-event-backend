@@ -13,7 +13,7 @@ const eventRegisterSchema = new Schema<IEventRegister>(
     },
     teamName: {
       type: String,
-      required: true,
+      required: false,
     },
     coach: {
       type: Schema.Types.ObjectId,

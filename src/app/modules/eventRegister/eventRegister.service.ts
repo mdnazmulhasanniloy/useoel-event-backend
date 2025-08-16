@@ -45,16 +45,16 @@ const createEventRegister = async (payload: IEventRegister, userId: string) => {
     payload.coach = userId;
   }
 
-  if (
-    event?.category === CATEGORY_NAME?.robosporst ||
-    CATEGORY_NAME.sumboBots
-  ) {
-    //@ts-ignore
-    payload.player = userId;
-  } else {
-    //@ts-ignore
-    payload.coach = userId;
-  }
+  // if (
+  //   event?.category === CATEGORY_NAME?.robosporst ||
+  //   CATEGORY_NAME.sumboBots
+  // ) {
+  //   //@ts-ignore
+  //   payload.player = userId;
+  // } else {
+  //   //@ts-ignore
+  //   payload.coach = userId;
+  // }
 
   const result = await EventRegister.create(payload);
   if (!result) {
@@ -73,6 +73,7 @@ const getAllEventRegister = async (query: Record<string, any>) => {
       {
         path: 'coach',
         select: '-verification -password -isDeleted -role -gender -status',
+        populate: [{ path: 'team' }],
       },
       {
         path: 'player',

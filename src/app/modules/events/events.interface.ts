@@ -4,11 +4,12 @@ export interface IEvents {
   image: string;
   name: string;
   category: string;
+  gameType?: 'singleElimination' | 'doubleElimination' | 'poolPlay';
   ageGroup: string;
   scoringStyle: string;
   status: string;
   Round: Number;
-  roles: string;
+  rules: string;
   registrationStartTime: string;
   registrationEndTime: String;
   maxParticipants: Number;

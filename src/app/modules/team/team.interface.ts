@@ -1,10 +1,6 @@
 import { Model, ObjectId } from 'mongoose';
 
-export interface ITeamPlayer {
-  name: string;
-  email: string;
-  image: string;
-}
+ 
 export interface ITeam {
   user: ObjectId;
   name: string;
@@ -12,9 +8,9 @@ export interface ITeam {
   state: string;
   country: string;
   teamCategory: string;
-  ageGroup: string; 
+  ageGroup: string;
   logo: string;
-  player: ITeamPlayer[];
+  player: ObjectId[];
   isDeleted: boolean;
 }
 

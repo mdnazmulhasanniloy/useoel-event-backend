@@ -15,9 +15,19 @@ import { packagesRoutes } from '../modules/packages/packages.route';
 import { joiningRequestsRoutes } from '../modules/joiningRequests/joiningRequests.route';
 import { matchHighlightsRoutes } from '../modules/matchHighlights/matchHighlights.route';
 import { assignGameRoutes } from '../modules/assignGame/assignGame.route';
+import { paymentsRoutes } from '../modules/payments/payments.route';
+import { contentsRoutes } from '../modules/contents/contents.route';
+import { dashboardRoutes } from '../modules/dashboard/dashboard.route';
+import { matchRoutes } from '../modules/match/match.route';
+import { participantRoutes } from '../modules/participant/participant.route';
+import { leaderBoardRoutes } from '../modules/leaderBoard/leaderBoard.route';
 
 const router = Router();
 const moduleRoutes = [
+  {
+    path: '/contents',
+    route: contentsRoutes,
+  },
   {
     path: '/uploads',
     route: uploadRouter,
@@ -79,8 +89,28 @@ const moduleRoutes = [
     route: packagesRoutes,
   },
   {
+    path: '/payments',
+    route: paymentsRoutes,
+  },
+  {
     path: '/match-highlight',
     route: matchHighlightsRoutes,
+  },
+  {
+    path: '/dashboard',
+    route: dashboardRoutes,
+  },
+  {
+    path: '/match',
+    route: matchRoutes,
+  },
+  {
+    path: '/participant',
+    route: participantRoutes,
+  },
+  {
+    path: '/leaderboard',
+    route: leaderBoardRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

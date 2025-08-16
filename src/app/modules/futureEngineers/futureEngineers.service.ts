@@ -64,6 +64,8 @@ const createFutureEngineers = async (payload: IFutureEngineers) => {
             gameType: gameType.FutureEngineers,
             //@ts-ignore
             game: result[0]._id,
+            event: gameData.event,
+            coach: gameData.coach,
           })),
         )
       : [];

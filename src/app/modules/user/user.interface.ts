@@ -33,7 +33,7 @@ export interface IUser {
   videos: string[];
   experience: string;
   preferenceCategory: string;
-  ageGroup: string; 
+  ageGroup: string;
 }
 
 export interface UserModel extends Model<IUser> {

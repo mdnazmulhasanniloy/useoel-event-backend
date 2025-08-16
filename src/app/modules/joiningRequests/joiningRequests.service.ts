@@ -13,11 +13,16 @@ import { IUser } from '../user/user.interface';
 
 const createJoiningRequests = async (payload: IJoiningRequests) => {
   // Check if the player has already requested to join the team
-  const team = await Team.findById(payload.team);
-  if (!team) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Team not found');
+  if (payload?.team) {
+    const team = await Team.findById(payload.team);
+    if (!team) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Team not found');
+    }
   }
-  const result = await JoiningRequests.create(payload);
+  const result = (await JoiningRequests.create(payload)).populate([
+    'team',
+    'player',
+  ]);
   if (!result) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -25,13 +30,13 @@ const createJoiningRequests = async (payload: IJoiningRequests) => {
     );
   }
 
-  notificationServices.insertNotificationIntoDb({
-    receiver: result.player,
-    message: 'You have received a team invite!',
-    description: `The team "<b>${team.name}</b>" has invited you to join them. Check your joining requests for more details.`,
-    refference: result?._id,
-    model_type: modeType.JoiningRequests,
-  });
+  // notificationServices.insertNotificationIntoDb({
+  //   receiver: result.player,
+  //   message: 'You have received a team invite!',
+  //   description: `The team "<b>${team.name}</b>" has invited you to join them. Check your joining requests for more details.`,
+  //   refference: result?._id,
+  //   model_type: modeType.JoiningRequests,
+  // });
 
   return result;
 };
@@ -41,7 +46,7 @@ const getAllJoiningRequests = async (query: Record<string, any>) => {
     JoiningRequests.find({ isDeleted: false }),
     query,
   )
-    .search([''])
+    .search(['status'])
     .filter()
     .paginate()
     .sort()
@@ -99,18 +104,6 @@ const approvedRequest = async (id: string) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'Team is full');
   }
 
-  const isDuplicate = (request?.team as ITeam).player.some(
-    player => player?.email === (request?.player as IUser)?.email,
-  );
-
-  
-  if (isDuplicate) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      'you are already exists in the team',
-    );
-  }
-
   try {
     const result = await JoiningRequests.findByIdAndUpdate(
       id,
@@ -137,13 +130,8 @@ const approvedRequest = async (id: string) => {
 
     const team = await Team.findByIdAndUpdate(
       result?.team,
-      {
-        player: {
-          name: player.name,
-          email: player.email,
-          image: player.profile,
-        },
-      },
+
+      { $push: { player: player?._id } },
       { new: true, upsert: false, session },
     );
 

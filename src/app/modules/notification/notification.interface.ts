@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb';
 export enum modeType {
   RefundRequest = 'refundRequest',
   JoiningRequests = 'JoiningRequests',
+  Team = 'Team',
   Order = 'Order',
   payment = 'Payment',
 }

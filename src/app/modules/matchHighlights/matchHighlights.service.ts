@@ -1,4 +1,3 @@
-
 import httpStatus from 'http-status';
 import { IMatchHighlights } from './matchHighlights.interface';
 import MatchHighlights from './matchHighlights.models';
@@ -8,14 +7,20 @@ import AppError from '../../error/AppError';
 const createMatchHighlights = async (payload: IMatchHighlights) => {
   const result = await MatchHighlights.create(payload);
   if (!result) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create matchHighlights');
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Failed to create matchHighlights',
+    );
   }
   return result;
 };
 
 const getAllMatchHighlights = async (query: Record<string, any>) => {
-  const matchHighlightsModel = new QueryBuilder(MatchHighlights.find({isDeleted:false}), query)
-    .search(["title", "ageGroup"])
+  const matchHighlightsModel = new QueryBuilder(
+    MatchHighlights.find({ isDeleted: false }),
+    query,
+  )
+    .search(['title', 'ageGroup'])
     .filter()
     .paginate()
     .sort()
@@ -35,14 +40,22 @@ const getMatchHighlightsById = async (id: string) => {
   if (!result) {
     throw new AppError(httpStatus.BAD_REQUEST, 'MatchHighlights not found!');
   }
-  await MatchHighlights.findByIdAndUpdate(result?._id, {$inc: {plays: 1}})
+  await MatchHighlights.findByIdAndUpdate(result?._id, { $inc: { plays: 1 } });
   return result;
 };
 
-const updateMatchHighlights = async (id: string, payload: Partial<IMatchHighlights>) => {
-  const result = await MatchHighlights.findByIdAndUpdate(id, payload, { new: true });
+const updateMatchHighlights = async (
+  id: string,
+  payload: Partial<IMatchHighlights>,
+) => {
+  const result = await MatchHighlights.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
   if (!result || result.isDeleted) {
-    throw new AppError(httpStatus.BAD_REQUEST,'Failed to update MatchHighlights');
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Failed to update MatchHighlights',
+    );
   }
   return result;
 };
@@ -51,10 +64,13 @@ const deleteMatchHighlights = async (id: string) => {
   const result = await MatchHighlights.findByIdAndUpdate(
     id,
     { isDeleted: true },
-    { new: true }
+    { new: true },
   );
   if (!result) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete matchHighlights');
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Failed to delete matchHighlights',
+    );
   }
   return result;
 };

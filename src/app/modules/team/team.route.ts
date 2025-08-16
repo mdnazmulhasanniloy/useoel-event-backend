@@ -13,7 +13,7 @@ const upload = multer({ storage });
 
 router.post(
   '/',
-  auth(USER_ROLE.team),
+  auth(USER_ROLE.coach),
   upload.single('logo'),
   parseData(),
   validateRequest(teamValidationSchema.createTeamSchema),
@@ -22,29 +22,27 @@ router.post(
 
 router.patch(
   '/add-player',
-  auth(USER_ROLE.team),
-
-  validateRequest(teamValidationSchema.addPlayerSchema),
+  auth(USER_ROLE.coach),
   teamController.addPlayerInTeam,
 );
 
 router.patch(
   '/remove-player',
-  auth(USER_ROLE.team),
+  auth(USER_ROLE.coach),
   validateRequest(teamValidationSchema.removePlayerSchema),
   teamController.removePlayerFromTeam,
 );
 
 router.patch(
   '/:id',
-  auth(USER_ROLE.team),
+  auth(USER_ROLE.coach),
   upload.single('logo'),
   parseData(),
   validateRequest(teamValidationSchema.updateTeamSchema),
   teamController.updateTeam,
 );
 
-router.delete('/:id', auth(USER_ROLE.team), teamController.deleteTeam);
+router.delete('/:id', auth(USER_ROLE.coach), teamController.deleteTeam);
 router.get('/:id', teamController.getTeamById);
 router.get('/', teamController.getAllTeam);
 

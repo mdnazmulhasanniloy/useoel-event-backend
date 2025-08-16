@@ -55,6 +55,15 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const availability = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.availability(req.user.userId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User status changes successfully',
+    data: result,
+  });
+});
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   await User.findById(req.params.id);
 
@@ -150,4 +159,5 @@ export const userController = {
   deleteUser,
   deleteMYAccount,
   removeVideo,
+  availability,
 };
